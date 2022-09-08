@@ -1,17 +1,25 @@
-import React, { createContext, useContext } from "react";
+import { createContext, useContext } from "react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../configs/firebase";
 
-const UserContext = createContext();
+const AuthContext = createContext();
+
+export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }) => {
-  const createAdmin = (email, password) => {
+  const testContext = () => {
+    console.log("UserContext is applied!");
+  };
+
+  const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  return <UserContext.Provider value={createAdmin}>{children}</UserContext.Provider>;
-};
+  const contextValue = {
+    testContext,
+    createUser,
+  };
 
-export const UserAuth = () => {
-  return useContext(UserContext);
+  // return <UserContext.Provider value={(testContext, createUser)}>{children}</UserContext.Provider>;
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
