@@ -5,15 +5,22 @@ import Reports from "./pages/reports";
 import Map from "./pages/map";
 import Sandbox from "./pages/sandbox";
 
+// React Toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/evacuation" element={<Evacuation />} />
-      <Route path="/reports" element={<Reports />} />
-      <Route path="/map" element={<Map />} />
-      <Route path="/sandbox" element={<Sandbox />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/evacuation" element={<Evacuation />} />
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/map" element={<Map />} />
+        <Route path="/sandbox" element={<Sandbox />} />
+      </Routes>
+      <ToastContainer />
+    </>
   );
 }
 
