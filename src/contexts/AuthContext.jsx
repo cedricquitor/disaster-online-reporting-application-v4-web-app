@@ -20,6 +20,10 @@ export const AuthContextProvider = ({ children }) => {
     });
   };
 
+  const signIn = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
   const logout = () => {
     return signOut(auth);
     console.log("Admin is logged out");
@@ -38,6 +42,7 @@ export const AuthContextProvider = ({ children }) => {
     user,
     testContext,
     createUser,
+    signIn,
     logout,
   };
 
