@@ -44,7 +44,7 @@ const Reports = () => {
   }, []);
 
   return (
-    <div className="bg-bg-color flex items-start">
+    <div className="bg-bg-color flex items-start overflow-auto">
       {/* Navigation */}
       <aside className="flex flex-col justify-between h-screen">
         {/* Upper Part */}
@@ -102,7 +102,7 @@ const Reports = () => {
           </div>
         </div>
         {/* Tables Area */}
-        <div className="flex flex-col w-6/12 xl:w-10/12 2xl:w-5/6 mx-auto mt-8">
+        <div className="flex flex-col w-11/12 xl:w-10/12 2xl:w-5/6 mx-auto mt-8">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
               <div className="shadow overflow-hidden border-b border-primary-gray sm:rounded-lg">

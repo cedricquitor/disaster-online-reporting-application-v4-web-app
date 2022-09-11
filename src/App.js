@@ -8,12 +8,14 @@ import Sandbox from "./pages/sandbox";
 // React Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import Menu from "./pages/menu";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Menu />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/evacuation" element={<Evacuation />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/map" element={<Map />} />
