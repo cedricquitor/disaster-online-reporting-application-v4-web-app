@@ -2,9 +2,25 @@ import React from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { IoLogOut } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const Reports = () => {
+  const { testContext, logout } = useAuthContext();
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className="bg-bg-color flex items-start">
       {/* Navigation */}
@@ -33,7 +49,7 @@ const Reports = () => {
         </div>
         {/* Bottom Part */}
         <div className="h-[15%] w-24 bg-safe-gray rounded-tr-2xl">
-          <a href="#" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+          <a href="#" onClick={() => handleLogout()} className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
             {/* <img src="src/assets/logout_btn.svg" alt="Logout Button" className="mx-auto mt-8" /> */}
             <IoLogOut className="h-12 w-12 mt-8 mx-auto" />
           </a>

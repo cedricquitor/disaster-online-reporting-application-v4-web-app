@@ -14,6 +14,7 @@ const Evacuation = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      toast.success("Logged out successfully");
       navigate("/");
     } catch (error) {
       toast.error(error.message);
