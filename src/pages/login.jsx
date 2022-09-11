@@ -25,6 +25,7 @@ const Login = () => {
     try {
       await signIn(email, password);
       console.log("Login");
+      navigate("/evacuation");
     } catch (error) {
       setError(error.message);
       toast.error(error.message);

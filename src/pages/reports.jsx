@@ -2,6 +2,7 @@ import React from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { IoLogOut } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const Reports = () => {
   return (
@@ -16,25 +17,25 @@ const Reports = () => {
                 <img src={DoraHomeIcon} alt="DORAv4 Home Button" />
               </li>
               <li className="pt-48">
-                <a href="#">
+                <Link to="/evacuation" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
                   {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
-                  <HiFolder className="h-12 w-12 mx-auto text-secondary-gray" />
-                </a>
+                  <HiFolder className="h-12 w-12 mx-auto" />
+                </Link>
               </li>
               <li className="pt-6">
-                <a href="#">
+                <Link to="/reports" className="text-primary-green transition focus:text-secondary-green">
                   {/* <img src="src\assets\evacuation_center_icon.svg" alt="Evacuation Center Icon" className="mx-auto" /> */}
-                  <HiOfficeBuilding className="h-12 w-12 mx-auto text-secondary-gray" />
-                </a>
+                  <HiOfficeBuilding className="h-12 w-12 mx-auto" />
+                </Link>
               </li>
             </ul>
           </div>
         </div>
         {/* Bottom Part */}
         <div className="h-[15%] w-24 bg-safe-gray rounded-tr-2xl">
-          <a href="#">
+          <a href="#" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
             {/* <img src="src/assets/logout_btn.svg" alt="Logout Button" className="mx-auto mt-8" /> */}
-            <IoLogOut className="h-12 w-12 mt-8 mx-auto text-secondary-gray" />
+            <IoLogOut className="h-12 w-12 mt-8 mx-auto" />
           </a>
         </div>
       </aside>
