@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { IoLogOut } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { db } from "../configs/firebase";
+import { child, get, onValue, ref } from "firebase/database";
 
 const Reports = () => {
   const { testContext, logout } = useAuthContext();
+  const [data, setData] = useState([]);
 
   const navigate = useNavigate();
 
@@ -20,6 +24,24 @@ const Reports = () => {
       toast.error(error.message);
     }
   };
+
+  // Query reports
+  const getReports = () => {
+    const dbRef = ref(db, "Reports/");
+    onValue(dbRef, (snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        setData(snapshot.val());
+      } else {
+        console.log("No data");
+      }
+    });
+  };
+
+  // Fetch reports at page load
+  useEffect(() => {
+    getReports();
+  }, []);
 
   return (
     <div className="bg-bg-color flex items-start">
@@ -74,9 +96,73 @@ const Reports = () => {
             />
           </div>
           <div className="flex gap-4">
-            <a href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            <a onClick={() => console.log(Object.values(data))} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Archive
             </a>
+          </div>
+        </div>
+        {/* Tables Area */}
+        <div className="flex flex-col w-6/12 xl:w-10/12 2xl:w-5/6 mx-auto mt-8">
+          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+              <div className="shadow overflow-hidden border-b border-primary-gray sm:rounded-lg">
+                <table className="min-w-full divide-y divide-secondary-green">
+                  <thead className="bg-primary-green">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-base font-bold text-safe-white uppercase tracking-wider">
+                        Disaster
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-base font-bold text-safe-white uppercase tracking-wider">
+                        Description
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-base font-bold text-safe-white uppercase tracking-wider">
+                        Name
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-base font-bold text-safe-white uppercase tracking-wider">
+                        Date
+                      </th>
+                      <th scope="col" className="relative px-6 py-3">
+                        <span className="sr-only">Edit</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-safe-white divide-y divide-primary-gray">
+                    {Object.values(data).map((report) => {
+                      const { reportId, disasterType, address, description, fullName, date } = report;
+                      return (
+                        <tr key={reportId}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div>
+                                <div className="text-sm font-medium text-secondary-green">{disasterType}</div>
+                                <div className="text-sm text-primary-gray">{address}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-safe-black">{description}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-safe-black">{fullName}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-safe-black">{date}</td>
+                          <td className="py-4 whitespace-nowrap text-right text-sm">
+                            <div className="flex gap-4">
+                              <button onClick={() => console.log(Object.keys(report))} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                View
+                              </button>
+                              <button onClick={() => console.log(Object.keys(report))} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>

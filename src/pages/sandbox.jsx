@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 const Sandbox = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
   const [error, setError] = useState(false);
 
   // Use UserAuth Contest
@@ -40,6 +42,14 @@ const Sandbox = () => {
             <div>
               <label htmlFor="password">Password</label>
               <input type="text" name="password" onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            <div>
+              <label htmlFor="password">Name</label>
+              <input type="text" name="password" onChange={(e) => setName(e.target.value)} />
+            </div>
+            <div>
+              <label htmlFor="password">City</label>
+              <input type="text" name="password" onChange={(e) => setCity(e.target.value)} />
             </div>
             <button className="bg-primary-green text-safe-white">Sign up</button>
           </form>
