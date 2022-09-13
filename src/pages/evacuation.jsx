@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { IoLogOut } from "react-icons/io5";
 import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Modal from "../components/Modal";
 
 const Evacuation = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { testContext, logout } = useAuthContext();
 
   const navigate = useNavigate();
@@ -20,6 +22,10 @@ const Evacuation = () => {
       toast.error(error.message);
     }
   };
+
+  // Modal Functions
+  const handleOnClose = () => setIsModalVisible(false);
+  const handleAddEc = () => setIsModalVisible(true);
 
   return (
     <div className="bg-bg-color flex items-start">
@@ -77,11 +83,15 @@ const Evacuation = () => {
             <a href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Archive
             </a>
-            <a href="#" className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            <a href="#" onClick={handleAddEc} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Add EC
             </a>
           </div>
         </div>
+        {/* Table Content Here */}
+        <Modal visible={isModalVisible} onClose={handleOnClose}>
+          <h1>Text</h1>
+        </Modal>
       </div>
     </div>
   );
