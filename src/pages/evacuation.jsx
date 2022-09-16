@@ -7,12 +7,17 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Modal from "../components/Modal";
-import { Autocomplete } from "@react-google-maps/api";
+import { Autocomplete, LoadScript, useJsApiLoader } from "@react-google-maps/api";
 
 const Evacuation = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [location, setLocation] = useState();
   const { testContext, logout } = useAuthContext();
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
+    libraries: ["places"],
+  });
 
   const navigate = useNavigate();
 
@@ -105,16 +110,16 @@ const Evacuation = () => {
               <label htmlFor="location" className="relative">
                 Location
               </label>
-              {/* <Autocomplete> */}
-              <input
-                id="location"
-                name="location"
-                type="text"
-                className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                placeholder="Location"
-                onChange={(e) => setLocation(e.target.value)}
-              />
-              {/* </Autocomplete> */}
+              <Autocomplete>
+                <input
+                  id="location"
+                  name="location"
+                  type="text"
+                  className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                  placeholder="Location"
+                  onChange={(e) => setLocation(e.target.value)}
+                />
+              </Autocomplete>
             </div>
           </div>
         </Modal>

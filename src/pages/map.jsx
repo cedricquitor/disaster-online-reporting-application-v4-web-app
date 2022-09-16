@@ -5,8 +5,7 @@ import { FaMapMarked } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import googleMapReact from "google-map-react";
-import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import { useJsApiLoader, GoogleMap, Marker, Autocomplete } from "@react-google-maps/api";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading";
 
@@ -78,16 +77,6 @@ const Map = () => {
       </aside>
       {/* Main Content Area */}
       <div className="h-screen w-full">
-        {/* <googleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI" }}
-        defaultCenter={defaultCoordinates}
-        center={defaultCoordinates}
-        defaultZoom={14}
-        margin={[50, 50, 50, 50]}
-        options={""}
-        onChange={""}
-        onChildClick={""}
-      ></googleMapReact> */}
         <GoogleMap center={defaultCoordinates} zoom={16} mapContainerStyle={{ width: "100%", height: "100%" }} options={{ zoomControl: false, streetViewControl: false, mapTypeControl: false, fullscreenControl: false }}>
           {/* Markers */}
           <Marker position={defaultCoordinates} icon={DoraHomeIcon} />
