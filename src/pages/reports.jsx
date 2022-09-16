@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { IoLogOut } from "react-icons/io5";
+import { FaMapMarked } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
@@ -43,7 +44,6 @@ const Reports = () => {
     const dbRef = ref(db, "Reports/");
     onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         setData(snapshot.val());
         setIsLoading(false);
       } else {
@@ -72,13 +72,19 @@ const Reports = () => {
               <li className="pt-48">
                 <Link to="/evacuation" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
                   {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
-                  <HiFolder className="h-12 w-12 mx-auto" />
+                  <HiOfficeBuilding className="h-12 w-12 mx-auto" />
                 </Link>
               </li>
               <li className="pt-6">
                 <Link to="/reports" className="text-primary-green transition focus:text-secondary-green">
                   {/* <img src="src\assets\evacuation_center_icon.svg" alt="Evacuation Center Icon" className="mx-auto" /> */}
-                  <HiOfficeBuilding className="h-12 w-12 mx-auto" />
+                  <HiFolder className="h-12 w-12 mx-auto" />
+                </Link>
+              </li>
+              <li className="pt-6">
+                <Link to="/map" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+                  {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
+                  <FaMapMarked className="h-12 w-12 mx-auto" />
                 </Link>
               </li>
             </ul>
@@ -148,53 +154,70 @@ const Reports = () => {
                       {Object.values(data).map((report) => {
                         const { reportId, disasterType, address, description, fullName, date } = report;
                         return (
-                          <>
-                            <tr key={reportId}>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div>
-                                    <div className="text-sm font-medium text-secondary-green">{disasterType}</div>
-                                    <div className="text-sm text-primary-gray">{address}</div>
-                                  </div>
+                          <tr key={reportId}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div>
+                                  <div className="text-sm font-medium text-secondary-green">{disasterType}</div>
+                                  <div className="text-sm text-primary-gray">{address}</div>
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-safe-black">{description}</div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-safe-black">{fullName}</div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-safe-black">{date}</td>
-                              <td className="py-4 whitespace-nowrap text-right text-sm">
-                                <div className="flex gap-4">
-                                  <button onClick={() => handleViewReport(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                    View
-                                  </button>
-                                  <button onClick={() => console.log(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                    Delete
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                            <Modal visible={isModalVisible} onClose={handleOnClose}>
-                              <div className="flex flex-col items-center">
-                                <h1 className="text-2xl font-medium text-primary-green">{current.disasterType}</h1>
-                                <p className="text-sm text-primary-gray">{current.reportId}</p>
                               </div>
-                              <div>
-                                <h2>{current.address}</h2>
-                                <h2>{current.date}</h2>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-safe-black">{description}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-safe-black">{fullName}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-safe-black">{date}</td>
+                            <td className="py-4 whitespace-nowrap text-right text-sm">
+                              <div className="flex gap-4">
+                                <button onClick={() => handleViewReport(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  View
+                                </button>
+                                <button onClick={() => console.log(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  Delete
+                                </button>
                               </div>
-                              <div className="flex">
-                                <img src={current.profilePicture} className="h-8 w-8 rounded-full my-auto" alt="Poster's Profile Image" />
-                                <p className="my-auto">{current.fullName}</p>
-                              </div>
-                            </Modal>
-                          </>
+                            </td>
+                          </tr>
                         );
                       })}
                     </tbody>
                   </table>
+                  {/* View Report Modal */}
+                  <Modal visible={isModalVisible} onClose={handleOnClose}>
+                    <div className="flex flex-col items-center">
+                      <h1 className="text-2xl font-medium text-primary-green">{current.disasterType}</h1>
+                      <p className="text-sm text-primary-gray">ID: {current.reportId}</p>
+                    </div>
+                    <div className="flex flex-col mt-4">
+                      <h2 className="text-sm text-safe-black">{current.address}</h2>
+                      <h2 className="text-sm text-primary-gray">
+                        Coordinates: {current.latitude}, {current.longitude}
+                      </h2>
+                    </div>
+                    <div className="flex flex-col mt-4">
+                      <div className="flex justify-between">
+                        <div className="flex">
+                          <img src={current.profilePicture} className="h-8 w-8 rounded-full my-auto" alt="Disaster Report poster's profile image" />
+                          <p className="ml-2 my-auto text-safe-black">{current.fullName}</p>
+                        </div>
+                        <h2 className="my-auto text-safe-black">{current.date}</h2>
+                      </div>
+                      <img src={current.reportPicture} className="mt-2 rounded-xl" alt="Disaster Report's attached image" />
+                      <p className="mt-2 text-safe-black">Report Description: {current.description}</p>
+                      <p className="text-safe-black">
+                        Report has {current.upvotes} upvotes and {current.comments} comments
+                      </p>
+                      <div className="flex gap-4 justify-center pb-2">
+                        <button onClick={handleOnClose} className="border-2 border-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
+                          Close
+                        </button>
+                        <button className="bg-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">Delete</button>
+                      </div>
+                    </div>
+                  </Modal>
                 </div>
               </div>
             </div>

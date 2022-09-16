@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { IoLogOut } from "react-icons/io5";
+import { FaMapMarked } from "react-icons/fa";
 import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -41,13 +42,19 @@ const Evacuation = () => {
               <li className="pt-48">
                 <Link to="/evacuation" className="text-primary-green transition active:text-secondary-green">
                   {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
-                  <HiFolder className="h-12 w-12 mx-auto" />
+                  <HiOfficeBuilding className="h-12 w-12 mx-auto" />
                 </Link>
               </li>
               <li className="pt-6">
                 <Link to="/reports" className="text-secondary-gray transition hover:text-primary-green active:text-secondary-green">
                   {/* <img src="src\assets\evacuation_center_icon.svg" alt="Evacuation Center Icon" className="mx-auto" /> */}
-                  <HiOfficeBuilding className="h-12 w-12 mx-auto " />
+                  <HiFolder className="h-12 w-12 mx-auto " />
+                </Link>
+              </li>
+              <li className="pt-6">
+                <Link to="/map" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+                  {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
+                  <FaMapMarked className="h-12 w-12 mx-auto" />
                 </Link>
               </li>
             </ul>
