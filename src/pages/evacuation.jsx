@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
-import { IoLogOut } from "react-icons/io5";
 import { FaMapMarked } from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
 import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Modal from "../components/Modal";
+import { Autocomplete } from "@react-google-maps/api";
 
 const Evacuation = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [location, setLocation] = useState();
   const { testContext, logout } = useAuthContext();
 
   const navigate = useNavigate();
@@ -97,7 +99,24 @@ const Evacuation = () => {
         </div>
         {/* Table Content Here */}
         <Modal visible={isModalVisible} onClose={handleOnClose}>
-          <h1>Text</h1>
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="text-2xl font-medium text-primary-green">Add Evacuation Center</h1>
+            <div className="mt-4">
+              <label htmlFor="location" className="relative">
+                Location
+              </label>
+              {/* <Autocomplete> */}
+              <input
+                id="location"
+                name="location"
+                type="text"
+                className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                placeholder="Location"
+                onChange={(e) => setLocation(e.target.value)}
+              />
+              {/* </Autocomplete> */}
+            </div>
+          </div>
         </Modal>
       </div>
     </div>
