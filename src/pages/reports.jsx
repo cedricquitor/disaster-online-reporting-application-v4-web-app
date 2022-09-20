@@ -8,26 +8,38 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { db } from "../configs/firebase";
-import { child, get, onValue, ref } from "firebase/database";
+import { child, get, onValue, ref, remove } from "firebase/database";
 import Loading from "../components/Loading";
 import Modal from "../components/Modal";
 
 const Reports = () => {
   const { testContext, logout } = useAuthContext();
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const [current, setCurrent] = useState([]);
+  const [data, setData] = useState({});
+  const [current, setCurrent] = useState({});
 
   const navigate = useNavigate();
 
   // Modal states and functions
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const handleOnClose = () => setIsModalVisible(false);
-  const handleViewReport = (reportItem) => {
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+  const handleOnClose = () => {
+    setIsModalVisible(false);
+    setIsDeleteModalVisible(false);
+  };
+
+  const handleViewReportModal = (reportItem) => {
     setCurrent(reportItem);
     setIsModalVisible(true);
   };
 
+  const handleDeleteReportModal = (reportItem) => {
+    setCurrent(reportItem);
+    setIsDeleteModalVisible(true);
+  };
+
+  // Logout function
   const handleLogout = async () => {
     try {
       await logout();
@@ -38,12 +50,21 @@ const Reports = () => {
     }
   };
 
+  // Delete report function
+  const handleDeleteReport = () => {
+    remove(ref(db, `/Reports/${current.reportId}`))
+      .then(() => toast.success(`Deleted ${current.disasterType} report with ID of ${current.reportId} successfully`))
+      .then(() => handleOnClose())
+      .catch((error) => toast.error(error.message));
+  };
+
   // Query reports
   const getReports = () => {
     setIsLoading(true);
-    const dbRef = ref(db, "Reports/");
+    const dbRef = ref(db, "/Reports");
     onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
+        console.log(snapshot.val());
         setData(snapshot.val());
         setIsLoading(false);
       } else {
@@ -55,7 +76,6 @@ const Reports = () => {
   // Fetch reports at page load
   useEffect(() => {
     getReports();
-    console.log(Object.values(data));
   }, []);
 
   return (
@@ -117,7 +137,11 @@ const Reports = () => {
             />
           </div>
           <div className="flex gap-4">
-            <a onClick={() => console.log(Object.values(data))} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            <a
+              onClick={() => (Object.keys(current).length === 0 ? console.log("No current found!", current) : console.log("Current: ", current))}
+              href="#"
+              className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green"
+            >
               Archive
             </a>
           </div>
@@ -172,10 +196,10 @@ const Reports = () => {
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-safe-black">{date}</td>
                             <td className="py-4 whitespace-nowrap text-right text-sm">
                               <div className="flex gap-4">
-                                <button onClick={() => handleViewReport(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                <button onClick={() => handleViewReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   View
                                 </button>
-                                <button onClick={() => console.log(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                <button onClick={() => handleDeleteReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   Delete
                                 </button>
                               </div>
@@ -214,8 +238,24 @@ const Reports = () => {
                         <button onClick={handleOnClose} className="border-2 border-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
                           Close
                         </button>
-                        <button className="bg-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">Delete</button>
+                        <button onClick={() => handleDeleteReport()} className="bg-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+                          Delete
+                        </button>
                       </div>
+                    </div>
+                  </Modal>
+                  <Modal visible={isDeleteModalVisible} onClose={handleOnClose}>
+                    <p className="text-xl text-center text-safe-black">
+                      Are you sure you want to delete a <span className="text-primary-green">{current.disasterType}</span> report on <span className="text-primary-green">{current.date}</span> with ID of{" "}
+                      <span className="text-primary-green">{current.reportId}</span>?
+                    </p>
+                    <div className="flex gap-4 justify-center pb-2">
+                      <button onClick={handleOnClose} className="border-2 border-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
+                        Close
+                      </button>
+                      <button onClick={() => handleDeleteReport()} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+                        Confirm
+                      </button>
                     </div>
                   </Modal>
                 </div>

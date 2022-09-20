@@ -14,6 +14,7 @@ const Map = () => {
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
+    libraries: ["places"],
   });
 
   const navigate = useNavigate();
