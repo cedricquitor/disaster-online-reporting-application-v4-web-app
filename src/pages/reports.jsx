@@ -229,7 +229,7 @@ const Reports = () => {
                         </div>
                         <h2 className="my-auto text-safe-black">{current.date}</h2>
                       </div>
-                      <img src={current.reportPicture} className="mt-2 rounded-xl" alt="Disaster Report's attached image" />
+                      <img src={current.reportPicture} className="w-full h-full mt-2 rounded-xl" alt="Disaster Report's attached image" />
                       <p className="mt-2 text-safe-black">Report Description: {current.description}</p>
                       <p className="text-safe-black">
                         Report has {current.upvotes} upvotes and {current.comments} comments
