@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { FaMapMarked } from "react-icons/fa";
@@ -8,10 +8,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Modal from "../components/Modal";
 import { Autocomplete, LoadScript, useJsApiLoader } from "@react-google-maps/api";
+import GooglePlacesAutocomplete, { geocodeByAddress } from "react-google-places-autocomplete";
+import { getLatLng } from "react-places-autocomplete";
 
 const Evacuation = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [location, setLocation] = useState();
+  const locationRef = useRef();
   const { testContext, logout } = useAuthContext();
 
   const { isLoaded } = useJsApiLoader({
@@ -104,23 +106,69 @@ const Evacuation = () => {
         </div>
         {/* Table Content Here */}
         <Modal visible={isModalVisible} onClose={handleOnClose}>
-          <div className="flex flex-col justify-center items-center">
-            <h1 className="text-2xl font-medium text-primary-green">Add Evacuation Center</h1>
-            <div className="mt-4">
-              <label htmlFor="location" className="relative">
-                Location
-              </label>
-              <Autocomplete>
-                <input
-                  id="location"
-                  name="location"
-                  type="text"
-                  className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                  placeholder="Location"
-                  onChange={(e) => setLocation(e.target.value)}
-                />
-              </Autocomplete>
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-medium text-center text-primary-green">Add Evacuation Center</h1>
+            <div className="mt-6">
+              <div className="flex">
+                <div className="flex flex-col w-[80%]">
+                  <label htmlFor="ecname" className="relative text-safe-black">
+                    Evacuation Center Name
+                  </label>
+                  <input
+                    id="ecname"
+                    name="ecname"
+                    type="text"
+                    className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                    placeholder="Evacuation Center Name"
+                  />
+                </div>
+                <div className="flex flex-col ml-4">
+                  <label htmlFor="city" className="relative text-safe-black">
+                    City
+                  </label>
+                  <input
+                    id="city"
+                    name="city"
+                    type="text"
+                    className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                    placeholder="City"
+                  />
+                </div>
+              </div>
+              <div className="mt-4">
+                <label htmlFor="location" className="relative text-safe-black">
+                  Location
+                </label>
+                <Autocomplete>
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                    placeholder="Location"
+                    ref={locationRef}
+                  />
+                </Autocomplete>
+              </div>
             </div>
+          </div>
+          <button
+            onClick={() => {
+              console.log(locationRef.current.value);
+              geocodeByAddress(locationRef.current.value)
+                .then((results) => getLatLng(results[0]))
+                .then(({ lat, lng }) => console.log("Successfully got lat and long", { lat, lng }));
+            }}
+          >
+            Test
+          </button>
+          <div className="flex gap-4 justify-center pb-2">
+            <button onClick={handleOnClose} className="border-2 border-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
+              Close
+            </button>
+            <button onClick={() => console.log("Test")} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+              Confirm
+            </button>
           </div>
         </Modal>
       </div>
