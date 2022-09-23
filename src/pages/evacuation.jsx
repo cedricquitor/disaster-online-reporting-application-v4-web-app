@@ -7,22 +7,36 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Modal from "../components/Modal";
-import { Autocomplete, LoadScript, useJsApiLoader } from "@react-google-maps/api";
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 import GooglePlacesAutocomplete, { geocodeByAddress } from "react-google-places-autocomplete";
-import { getLatLng } from "react-places-autocomplete";
+import { geocodeByPlaceId, getLatLng } from "react-places-autocomplete";
+import { ref, set } from "firebase/database";
+import { db } from "../configs/firebase";
 
 const Evacuation = () => {
+  // Modal Functions
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const locationRef = useRef();
-  const { testContext, logout } = useAuthContext();
+  const handleOnClose = () => setIsModalVisible(false);
+  const handleAddEcModal = () => setIsModalVisible(true);
 
+  // Refs
+  const locationRef = useRef();
+  const ecNameRef = useRef();
+  const cityRef = useRef();
+
+  // Google API JavaScript SDK loader
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
     libraries: ["places"],
   });
 
+  // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
+  // Instantiate AuthContext for use
+  const { testContext, logout } = useAuthContext();
+
+  // Logout handler from AuthContext
   const handleLogout = async () => {
     try {
       await logout();
@@ -33,9 +47,31 @@ const Evacuation = () => {
     }
   };
 
-  // Modal Functions
-  const handleOnClose = () => setIsModalVisible(false);
-  const handleAddEc = () => setIsModalVisible(true);
+  // Add Evacuation Center handler from modal
+  const handleAddEc = async () => {
+    // Check if all input fields have value
+    if (ecNameRef.current.value && cityRef.current.value && locationRef.current.value) {
+      // If all input fields have value, insert item to real-time database
+      try {
+        const geocode = await geocodeByAddress(locationRef.current.value);
+        const { lat, lng } = await getLatLng(geocode[0]);
+
+        // Add Evacuation Center details to database
+        set(ref(db, `/EvacuationCenters/${geocode[0].place_id}`), {
+          evacuationCenterName: ecNameRef.current.value,
+          city: cityRef.current.value,
+          location: locationRef.current.value,
+          latitude: lat,
+          longitude: lng,
+        }).then(() => toast.success(`Added ${geocode[0].place_id} to database successfully`));
+      } catch (error) {
+        toast.error(error.message);
+      }
+    } else {
+      console.log("No value!");
+      toast.error("Please fill up all input fields");
+    }
+  };
 
   return (
     <div className="bg-bg-color flex items-start">
@@ -99,7 +135,7 @@ const Evacuation = () => {
             <a href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Archive
             </a>
-            <a href="#" onClick={handleAddEc} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Add EC
             </a>
           </div>
@@ -120,6 +156,7 @@ const Evacuation = () => {
                     type="text"
                     className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                     placeholder="Evacuation Center Name"
+                    ref={ecNameRef}
                   />
                 </div>
                 <div className="flex flex-col ml-4">
@@ -132,6 +169,7 @@ const Evacuation = () => {
                     type="text"
                     className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                     placeholder="City"
+                    ref={cityRef}
                   />
                 </div>
               </div>
@@ -152,21 +190,11 @@ const Evacuation = () => {
               </div>
             </div>
           </div>
-          <button
-            onClick={() => {
-              console.log(locationRef.current.value);
-              geocodeByAddress(locationRef.current.value)
-                .then((results) => getLatLng(results[0]))
-                .then(({ lat, lng }) => console.log("Successfully got lat and long", { lat, lng }));
-            }}
-          >
-            Test
-          </button>
           <div className="flex gap-4 justify-center pb-2">
             <button onClick={handleOnClose} className="border-2 border-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
               Close
             </button>
-            <button onClick={() => console.log("Test")} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            <button onClick={handleAddEc} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Confirm
             </button>
           </div>
