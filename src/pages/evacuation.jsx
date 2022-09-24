@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { FaMapMarked } from "react-icons/fa";
@@ -10,10 +10,16 @@ import Modal from "../components/Modal";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 import { geocodeByAddress } from "react-google-places-autocomplete";
 import { getLatLng } from "react-places-autocomplete";
-import { ref, set } from "firebase/database";
+import { onValue, ref, set } from "firebase/database";
 import { db } from "../configs/firebase";
+import Loading from "../components/Loading";
 
 const Evacuation = () => {
+  // State managers
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState({});
+  const [current, setCurrent] = useState({});
+
   // Modal Functions
   const [isModalVisible, setIsModalVisible] = useState(false);
   const handleOnClose = () => setIsModalVisible(false);
@@ -56,6 +62,7 @@ const Evacuation = () => {
     if (ecNameRef.current.value && cityRef.current.value && locationRef.current.value) {
       // If all input fields have value, insert item to real-time database
       try {
+        // Get geocode using the input in location textbox
         const geocode = await geocodeByAddress(locationRef.current.value);
         const { lat, lng } = await getLatLng(geocode[0]);
 
@@ -78,6 +85,26 @@ const Evacuation = () => {
     // Close modal after adding the evacuation center
     setIsModalVisible(false);
   };
+
+  // Query evacuation centers
+  const getEvacuationCenters = () => {
+    setIsLoading(true);
+    const dbRef = ref(db, "/EvacuationCenters");
+    onValue(dbRef, (snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        setData(snapshot.val());
+        setIsLoading(false);
+      } else {
+        console.error("No data");
+      }
+    });
+  };
+
+  // Fetch evacuation centers at page load
+  useEffect(() => {
+    getEvacuationCenters();
+  }, []);
 
   return (
     <div className="bg-bg-color flex items-start">
@@ -138,7 +165,7 @@ const Evacuation = () => {
             />
           </div>
           <div className="flex gap-4">
-            <a href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            <a onClick={() => console.log(data)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Archive
             </a>
             <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
@@ -147,64 +174,122 @@ const Evacuation = () => {
           </div>
         </div>
         {/* Table Content Here */}
-        <Modal visible={isModalVisible} onClose={handleOnClose}>
-          <div className="flex flex-col">
-            <h1 className="text-2xl font-medium text-center text-primary-green">Add Evacuation Center</h1>
-            <div className="mt-6">
-              <div className="flex">
-                <div className="flex flex-col w-[80%]">
-                  <label htmlFor="ecname" className="relative text-safe-black">
-                    Evacuation Center Name
-                  </label>
-                  <input
-                    id="ecname"
-                    name="ecname"
-                    type="text"
-                    className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                    placeholder="Evacuation Center Name"
-                    ref={ecNameRef}
-                  />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div className="flex flex-col w-11/12 xl:w-10/12 2xl:w-5/6 mx-auto mt-8">
+            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div className="shadow overflow-hidden border-b border-primary-gray sm:rounded-lg">
+                  <table className="min-w-full divide-y divide-secondary-green">
+                    <thead className="bg-primary-green">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-base font-bold text-safe-white uppercase tracking-wider">
+                          Location
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-base font-bold text-safe-white uppercase tracking-wider">
+                          City
+                        </th>
+                        <th scope="col" className="relative px-6 py-3">
+                          <span className="sr-only">Edit</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-safe-white divide-y divide-primary-gray">
+                      {Object.values(data).map((evacuationCenter) => {
+                        const { latitude, evacuationCenterName, location, city } = evacuationCenter;
+                        return (
+                          <tr key={latitude}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div>
+                                  <div className="text-sm font-medium text-secondary-green">{evacuationCenterName}</div>
+                                  <div className="text-sm text-primary-gray">{location}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-safe-black">{city}</div>
+                            </td>
+                            <td className="py-4 whitespace-nowrap text-right text-sm">
+                              <div className="flex gap-4">
+                                <button onClick={() => console.log("Test")} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  View
+                                </button>
+                                <button onClick={() => console.log("Test")} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                  {/* Add Evacuation Center Modal */}
+                  <Modal visible={isModalVisible} onClose={handleOnClose}>
+                    <div className="flex flex-col">
+                      <h1 className="text-2xl font-medium text-center text-primary-green">Add Evacuation Center</h1>
+                      <div className="mt-6">
+                        <div className="flex">
+                          <div className="flex flex-col w-[80%]">
+                            <label htmlFor="ecname" className="relative text-safe-black">
+                              Evacuation Center Name
+                            </label>
+                            <input
+                              id="ecname"
+                              name="ecname"
+                              type="text"
+                              className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                              placeholder="Evacuation Center Name"
+                              ref={ecNameRef}
+                            />
+                          </div>
+                          <div className="flex flex-col ml-4">
+                            <label htmlFor="city" className="relative text-safe-black">
+                              City
+                            </label>
+                            <input
+                              id="city"
+                              name="city"
+                              type="text"
+                              className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                              placeholder="City"
+                              ref={cityRef}
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-4">
+                          <label htmlFor="location" className="relative text-safe-black">
+                            Location
+                          </label>
+                          <Autocomplete>
+                            <input
+                              id="location"
+                              name="location"
+                              type="text"
+                              className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                              placeholder="Location"
+                              ref={locationRef}
+                            />
+                          </Autocomplete>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 justify-center pb-2">
+                      <button onClick={handleOnClose} className="border-2 border-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
+                        Close
+                      </button>
+                      <button onClick={handleAddEc} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+                        Confirm
+                      </button>
+                    </div>
+                  </Modal>
                 </div>
-                <div className="flex flex-col ml-4">
-                  <label htmlFor="city" className="relative text-safe-black">
-                    City
-                  </label>
-                  <input
-                    id="city"
-                    name="city"
-                    type="text"
-                    className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                    placeholder="City"
-                    ref={cityRef}
-                  />
-                </div>
-              </div>
-              <div className="mt-4">
-                <label htmlFor="location" className="relative text-safe-black">
-                  Location
-                </label>
-                <Autocomplete>
-                  <input
-                    id="location"
-                    name="location"
-                    type="text"
-                    className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                    placeholder="Location"
-                    ref={locationRef}
-                  />
-                </Autocomplete>
               </div>
             </div>
           </div>
-          <div className="flex gap-4 justify-center pb-2">
-            <button onClick={handleOnClose} className="border-2 border-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
-              Close
-            </button>
-            <button onClick={handleAddEc} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-              Confirm
-            </button>
-          </div>
-        </Modal>
+        )}
       </div>
     </div>
   );

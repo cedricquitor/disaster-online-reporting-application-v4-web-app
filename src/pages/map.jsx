@@ -22,7 +22,7 @@ const Map = () => {
 
   const navigate = useNavigate();
 
-  // Center of map
+  // Center of map (Currently UST's location)
   const defaultCoordinates = { lat: 14.609817753661206, lng: 120.98943292296173 };
 
   const handleLogout = async () => {
