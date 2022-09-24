@@ -8,7 +8,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { db } from "../configs/firebase";
-import { child, get, onValue, ref, remove } from "firebase/database";
+import { onValue, ref, remove } from "firebase/database";
 import Loading from "../components/Loading";
 import Modal from "../components/Modal";
 

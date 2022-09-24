@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { FaMapMarked } from "react-icons/fa";
@@ -12,9 +12,12 @@ import Loading from "../components/Loading";
 const Map = () => {
   const { testContext, logout } = useAuthContext();
 
+  // List of libraries to inject to JavaScript API Loader
+  const [libraries] = useState(["places"]);
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
-    libraries: ["places"],
+    libraries,
   });
 
   const navigate = useNavigate();

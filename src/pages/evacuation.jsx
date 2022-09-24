@@ -8,8 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Modal from "../components/Modal";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
-import GooglePlacesAutocomplete, { geocodeByAddress } from "react-google-places-autocomplete";
-import { geocodeByPlaceId, getLatLng } from "react-places-autocomplete";
+import { geocodeByAddress } from "react-google-places-autocomplete";
+import { getLatLng } from "react-places-autocomplete";
 import { ref, set } from "firebase/database";
 import { db } from "../configs/firebase";
 
@@ -19,6 +19,7 @@ const Evacuation = () => {
   const handleOnClose = () => setIsModalVisible(false);
   const handleAddEcModal = () => setIsModalVisible(true);
 
+  // List of libraries to inject to JavaScript API Loader
   const [libraries] = useState(["places"]);
 
   // Refs
