@@ -68,6 +68,7 @@ const Evacuation = () => {
 
         // Add evacuation center details to database
         set(ref(db, `/EvacuationCenters/${geocode[0].place_id}`), {
+          evacuationCenterId: geocode[0].place_id,
           evacuationCenterName: ecNameRef.current.value,
           city: cityRef.current.value,
           location: locationRef.current.value,
