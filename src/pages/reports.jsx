@@ -13,12 +13,16 @@ import Loading from "../components/Loading";
 import Modal from "../components/Modal";
 
 const Reports = () => {
-  const { testContext, logout } = useAuthContext();
+  // State managers
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
   const [current, setCurrent] = useState({});
 
+  // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
+
+  // Instantiate AuthContext for use
+  const { testContext, logout } = useAuthContext();
 
   // Modal states and functions
   const [isModalVisible, setIsModalVisible] = useState(false);

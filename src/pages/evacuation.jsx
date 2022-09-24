@@ -19,6 +19,8 @@ const Evacuation = () => {
   const handleOnClose = () => setIsModalVisible(false);
   const handleAddEcModal = () => setIsModalVisible(true);
 
+  const [libraries] = useState(["places"]);
+
   // Refs
   const locationRef = useRef();
   const ecNameRef = useRef();
@@ -27,7 +29,7 @@ const Evacuation = () => {
   // Google API JavaScript SDK loader
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
-    libraries: ["places"],
+    libraries,
   });
 
   // Instantiate useNavigate hook for page redirect
@@ -47,7 +49,7 @@ const Evacuation = () => {
     }
   };
 
-  // Add Evacuation Center handler from modal
+  // Add evacuation center handler from modal
   const handleAddEc = async () => {
     // Check if all input fields have value
     if (ecNameRef.current.value && cityRef.current.value && locationRef.current.value) {
@@ -56,7 +58,7 @@ const Evacuation = () => {
         const geocode = await geocodeByAddress(locationRef.current.value);
         const { lat, lng } = await getLatLng(geocode[0]);
 
-        // Add Evacuation Center details to database
+        // Add evacuation center details to database
         set(ref(db, `/EvacuationCenters/${geocode[0].place_id}`), {
           evacuationCenterName: ecNameRef.current.value,
           city: cityRef.current.value,
@@ -71,6 +73,9 @@ const Evacuation = () => {
       console.log("No value!");
       toast.error("Please fill up all input fields");
     }
+
+    // Close modal after adding the evacuation center
+    setIsModalVisible(false);
   };
 
   return (
