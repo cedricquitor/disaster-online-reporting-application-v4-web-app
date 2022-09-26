@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
 
@@ -17,6 +17,9 @@ const Login = () => {
   // Use UserAuth Contest
   const { auth, signIn, user } = useAuthContext();
 
+  // Instantiate useLocation to get current URL
+  const location = useLocation();
+
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
@@ -26,16 +29,16 @@ const Login = () => {
     try {
       await signIn(email, password);
       console.log("Login");
-      navigate("/evacuation");
+      navigate("/");
     } catch (error) {
       setError(error.message);
       toast.error(error.message);
     }
   };
 
-  useEffect(() => {
-    console.log("User: ", user.uid);
-  }, []);
+  if (user) {
+    return <Navigate to="/" state={location} replace />;
+  }
 
   return (
     <div className="flex flex-col h-screen justify-center items-center bg-bg-color">

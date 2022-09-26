@@ -1,14 +1,17 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
+  // Instantiate useLocation to get current URL
+  const location = useLocation();
+
   // Instantiate AuthContext for use
   const { user, auth } = useAuthContext();
 
   // If user IS NOT logged in
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" state={location} replace />;
   }
   // If a user IS logged in BUT NOT authorized (NOT ADMIN)
   // TODO
