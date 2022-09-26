@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 // Image assets
 import DoraLogo from "../assets/dora_logo.svg";
 import { HiMail, HiKey } from "react-icons/hi";
+import { useEffect } from "react";
 
 const Login = () => {
   // State handlers
@@ -14,7 +15,7 @@ const Login = () => {
   const [error, setError] = useState(false);
 
   // Use UserAuth Contest
-  const { testContext, signIn } = useAuthContext();
+  const { auth, signIn, user } = useAuthContext();
 
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
@@ -31,6 +32,11 @@ const Login = () => {
       toast.error(error.message);
     }
   };
+
+  useEffect(() => {
+    console.log("User: ", user);
+    console.log("Auth: ", auth);
+  }, []);
 
   return (
     <div className="flex flex-col h-screen justify-center items-center bg-bg-color">

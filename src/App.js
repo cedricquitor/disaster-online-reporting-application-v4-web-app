@@ -4,22 +4,67 @@ import Evacuation from "./pages/evacuation";
 import Reports from "./pages/reports";
 import Map from "./pages/map";
 import Sandbox from "./pages/sandbox";
+import Unauthorized from "./pages/unauthorized";
 
 // React Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import Menu from "./pages/menu";
+import ProtectedRoute from "./helpers/ProtectedRoute";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Menu />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/evacuation" element={<Evacuation />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/sandbox" element={<Sandbox />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Menu />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/evacuation"
+          element={
+            <ProtectedRoute>
+              <Evacuation />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/map"
+          element={
+            <ProtectedRoute>
+              <Map />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mobile"
+          element={
+            <ProtectedRoute>
+              <Unauthorized />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sandbox"
+          element={
+            <ProtectedRoute>
+              <Sandbox />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       <ToastContainer />
     </>

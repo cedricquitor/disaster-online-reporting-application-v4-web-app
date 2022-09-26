@@ -39,6 +39,7 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   const contextValue = {
+    auth,
     user,
     testContext,
     createUser,
