@@ -198,9 +198,9 @@ const Evacuation = () => {
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
                       {Object.values(data).map((evacuationCenter) => {
-                        const { latitude, evacuationCenterName, location, city } = evacuationCenter;
+                        const { evacuationCenterId, evacuationCenterName, location, city } = evacuationCenter;
                         return (
-                          <tr key={latitude}>
+                          <tr key={evacuationCenterId}>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
                                 <div>
