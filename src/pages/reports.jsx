@@ -91,7 +91,9 @@ const Reports = () => {
           <div className="overflow-y-auto py-4 px-4">
             <ul className="space-y-2">
               <li>
-                <img src={DoraHomeIcon} alt="DORAv4 Home Button" />
+                <Link to="/">
+                  <img src={DoraHomeIcon} alt="DORAv4 Home Button" />
+                </Link>
               </li>
               <li className="pt-48">
                 <Link to="/evacuation" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">

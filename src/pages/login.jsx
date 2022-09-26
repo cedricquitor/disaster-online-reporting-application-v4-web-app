@@ -16,7 +16,7 @@ const Login = () => {
   // Use UserAuth Contest
   const { testContext, signIn } = useAuthContext();
 
-  // Navigate
+  // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
