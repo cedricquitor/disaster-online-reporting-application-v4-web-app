@@ -3,8 +3,9 @@ import Login from "./pages/login";
 import Evacuation from "./pages/evacuation";
 import Reports from "./pages/reports";
 import Map from "./pages/map";
-import Sandbox from "./pages/sandbox";
 import Unauthorized from "./pages/unauthorized";
+import Sandbox from "./pages/sandbox";
+import NotFound from "./pages/notfound";
 
 // React Toastify
 import { ToastContainer } from "react-toastify";
@@ -65,6 +66,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/* When no other routes match */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer />
     </>

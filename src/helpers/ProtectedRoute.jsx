@@ -4,13 +4,17 @@ import { useAuthContext } from "../contexts/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
   // Instantiate AuthContext for use
-  const { auth } = useAuthContext();
+  const { user, auth } = useAuthContext();
 
   // If user IS NOT logged in
-  if (auth.currentUser === null) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
   // If a user IS logged in BUT NOT authorized (NOT ADMIN)
+  // TODO
+  // Get auth.currentUser.uid
+  // Find the uid in Firebase
+  // If it does not exist, return to <Unauthorized />
 
   // If a user IS logged in AND authorized
   return children;

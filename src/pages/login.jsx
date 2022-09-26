@@ -34,8 +34,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    console.log("User: ", user);
-    console.log("Auth: ", auth);
+    console.log("User: ", user.uid);
   }, []);
 
   return (
