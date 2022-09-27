@@ -20,30 +20,51 @@ const Evacuation = () => {
   const [data, setData] = useState({});
   const [current, setCurrent] = useState({});
 
-  // Modal Functions
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const handleOnClose = () => setIsModalVisible(false);
-  const handleAddEcModal = () => setIsModalVisible(true);
-
-  // List of libraries to inject to JavaScript API Loader
-  const [libraries] = useState(["places"]);
-
-  // Refs
-  const locationRef = useRef();
-  const ecNameRef = useRef();
-  const cityRef = useRef();
-
-  // Google API JavaScript SDK loader
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
-    libraries,
-  });
-
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
   // Instantiate AuthContext for use
   const { testContext, logout } = useAuthContext();
+
+  // Modal states and functions
+  const [isAddEcModalVisible, setIsAddEcModalVisible] = useState(false);
+  const [isViewEcModalVisible, setIsViewEcModalVisible] = useState(false);
+  const [isEditEcModalVisible, setIsEditEcModalVisible] = useState(false);
+  const [isDeleteEcModalVisible, setIsDeleteEcModalVisible] = useState(false);
+
+  // Close modal handler
+  const handleOnClose = () => {
+    setIsAddEcModalVisible(false);
+    setIsViewEcModalVisible(false);
+    setIsEditEcModalVisible(false);
+    setIsDeleteEcModalVisible(false);
+  };
+
+  // Add evacuation center modal handler
+  const handleAddEcModal = () => setIsAddEcModalVisible(true);
+
+  // View evacuation center modal handler
+  const handleViewEcModal = (evacuationCenterItem) => {
+    setCurrent(evacuationCenterItem);
+    setIsViewEcModalVisible(true);
+  };
+
+  // Edit evacuation center modal handler
+  const handleEditEcModal = (evacuationCenterItem) => {
+    setCurrent(evacuationCenterItem);
+    setIsEditEcModalVisible(true);
+  };
+
+  // Delete evacuation center modal handler
+  const handleDeleteEcModal = (evacuationCenterItem) => {
+    setCurrent(evacuationCenterItem);
+    setIsDeleteEcModalVisible(true);
+  };
+
+  // Refs
+  const locationRef = useRef();
+  const ecNameRef = useRef();
+  const cityRef = useRef();
 
   // Logout handler from AuthContext
   const handleLogout = async () => {
@@ -84,7 +105,7 @@ const Evacuation = () => {
     }
 
     // Close modal after adding the evacuation center
-    setIsModalVisible(false);
+    setIsAddEcModalVisible(false);
   };
 
   // Query evacuation centers
@@ -220,6 +241,9 @@ const Evacuation = () => {
                                   View
                                 </button>
                                 <button onClick={() => console.log("Test")} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  Edit
+                                </button>
+                                <button onClick={() => console.log("Test")} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   Delete
                                 </button>
                               </div>
@@ -230,7 +254,7 @@ const Evacuation = () => {
                     </tbody>
                   </table>
                   {/* Add Evacuation Center Modal */}
-                  <Modal visible={isModalVisible} onClose={handleOnClose}>
+                  <Modal visible={isAddEcModalVisible} onClose={handleOnClose}>
                     <div className="flex flex-col">
                       <h1 className="text-2xl font-medium text-center text-primary-green">Add Evacuation Center</h1>
                       <div className="mt-6">
@@ -287,6 +311,18 @@ const Evacuation = () => {
                         Confirm
                       </button>
                     </div>
+                  </Modal>
+                  {/* View Evacuation Center */}
+                  <Modal>
+                    <p>View Evacuation Center</p>
+                  </Modal>
+                  {/* Edit Evacuation Center */}
+                  <Modal>
+                    <p>Edit Evacuation Center</p>
+                  </Modal>
+                  {/* Delete Evacuation Center */}
+                  <Modal>
+                    <p>Delete Evacuation Center</p>
                   </Modal>
                 </div>
               </div>

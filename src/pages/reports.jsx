@@ -25,19 +25,22 @@ const Reports = () => {
   const { testContext, logout } = useAuthContext();
 
   // Modal states and functions
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
+  // Close modal handler
   const handleOnClose = () => {
-    setIsModalVisible(false);
+    setIsViewModalVisible(false);
     setIsDeleteModalVisible(false);
   };
 
+  // View report modal handler
   const handleViewReportModal = (reportItem) => {
     setCurrent(reportItem);
-    setIsModalVisible(true);
+    setIsViewModalVisible(true);
   };
 
+  // Delete report modal handler
   const handleDeleteReportModal = (reportItem) => {
     setCurrent(reportItem);
     setIsDeleteModalVisible(true);
@@ -216,7 +219,7 @@ const Reports = () => {
                     </tbody>
                   </table>
                   {/* View Report Modal */}
-                  <Modal visible={isModalVisible} onClose={handleOnClose}>
+                  <Modal visible={isViewModalVisible} onClose={handleOnClose}>
                     <div className="flex flex-col items-center">
                       <h1 className="text-2xl font-medium text-primary-green">{current.disasterType}</h1>
                       <p className="text-sm text-primary-gray">ID: {current.reportId}</p>

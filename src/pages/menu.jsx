@@ -1,15 +1,34 @@
-import React from "react";
+import { useJsApiLoader } from "@react-google-maps/api";
+import React, { useState } from "react";
 import { FaMapMarked } from "react-icons/fa";
 import { HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const Menu = () => {
+  // Instantiate AuthContext for use
+  const { user } = useAuthContext();
+
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
+  // List of libraries to inject to JavaScript API Loader
+  const [libraries] = useState(["places"]);
+
+  // Google API JavaScript SDK loader
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
+    libraries,
+  });
+
   return (
     <div className="flex flex-col h-screen justify-center items-center bg-bg-color">
-      <div className="flex flex-col gap-4 bg-safe-white mb-8 px-5 py-8 rounded-2xl">
+      <div className="flex flex-col gap-4 bg-safe-white mb-8 px-6 py-6 rounded-2xl w-[440px]">
+        <div className="flex flex-col">
+          <p className="mb-2 text-2xl font-bold text-primary-green">Welcome back to DORAv4!</p>
+          <p className="text-2xl font-bold text-primary-green">What's the task today?</p>
+          <p className="text-sm text-primary-gray">Administrators are reponsible of managing the evacuation centers and ensuring the integrity of the reports by making sure that all reports follow the guidelines.</p>
+        </div>
         {/* First 2 Top */}
         <div className="flex flex-row gap-4">
           {/* Left */}
