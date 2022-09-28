@@ -27,7 +27,7 @@ const Menu = () => {
         <div className="flex flex-col">
           <p className="mb-2 text-2xl font-bold text-primary-green">Welcome back to DORAv4!</p>
           <p className="text-2xl font-bold text-primary-green">What's the task today?</p>
-          <p className="text-sm text-primary-gray">Administrators are reponsible of managing the evacuation centers and ensuring the integrity of the reports by making sure that all reports follow the guidelines.</p>
+          <p className="text-sm text-primary-gray">Administrators are reponsible of managing the evacuation centers and ensuring the integrity of the reports by making sure that all reports follow the guidelines</p>
         </div>
         {/* First 2 Top */}
         <div className="flex flex-row gap-4">

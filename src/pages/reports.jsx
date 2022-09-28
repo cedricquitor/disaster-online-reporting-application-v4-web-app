@@ -32,6 +32,9 @@ const Reports = () => {
   const handleOnClose = () => {
     setIsViewModalVisible(false);
     setIsDeleteModalVisible(false);
+
+    // Uncomment after testing to erase the state and avoid leak
+    // setCurrent({});
   };
 
   // View report modal handler
@@ -44,17 +47,6 @@ const Reports = () => {
   const handleDeleteReportModal = (reportItem) => {
     setCurrent(reportItem);
     setIsDeleteModalVisible(true);
-  };
-
-  // Logout function
-  const handleLogout = async () => {
-    try {
-      await logout();
-      toast.success("Logged out successfully");
-      navigate("/");
-    } catch (error) {
-      toast.error(error.message);
-    }
   };
 
   // Delete report function
@@ -78,6 +70,17 @@ const Reports = () => {
         console.error("No data");
       }
     });
+  };
+
+  // Logout function
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   // Fetch reports at page load
@@ -203,7 +206,7 @@ const Reports = () => {
                               <div className="text-sm text-safe-black">{fullName}</div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-safe-black">{date}</td>
-                            <td className="py-4 whitespace-nowrap text-right text-sm">
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                               <div className="flex gap-4">
                                 <button onClick={() => handleViewReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   View
@@ -253,6 +256,7 @@ const Reports = () => {
                       </div>
                     </div>
                   </Modal>
+                  {/* Delete Report Modal */}
                   <Modal visible={isDeleteModalVisible} onClose={handleOnClose}>
                     <p className="text-xl text-center text-safe-black">
                       Are you sure you want to delete a <span className="text-primary-green">{current.disasterType}</span> report on <span className="text-primary-green">{current.date}</span> with ID of{" "}

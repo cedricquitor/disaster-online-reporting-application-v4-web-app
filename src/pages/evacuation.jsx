@@ -30,14 +30,17 @@ const Evacuation = () => {
   const [isAddEcModalVisible, setIsAddEcModalVisible] = useState(false);
   const [isViewEcModalVisible, setIsViewEcModalVisible] = useState(false);
   const [isEditEcModalVisible, setIsEditEcModalVisible] = useState(false);
-  const [isDeleteEcModalVisible, setIsDeleteEcModalVisible] = useState(false);
+  const [isArchiveEcModalVisible, setIsArchiveEcModalVisible] = useState(false);
 
   // Close modal handler
   const handleOnClose = () => {
     setIsAddEcModalVisible(false);
     setIsViewEcModalVisible(false);
     setIsEditEcModalVisible(false);
-    setIsDeleteEcModalVisible(false);
+    setIsArchiveEcModalVisible(false);
+
+    // Uncomment after testing to erase the state and avoid leak
+    // setCurrent({});
   };
 
   // Add evacuation center modal handler
@@ -55,27 +58,29 @@ const Evacuation = () => {
     setIsEditEcModalVisible(true);
   };
 
-  // Delete evacuation center modal handler
-  const handleDeleteEcModal = (evacuationCenterItem) => {
+  // Archive evacuation center modal handler
+  const handleArchiveEcModal = (evacuationCenterItem) => {
     setCurrent(evacuationCenterItem);
-    setIsDeleteEcModalVisible(true);
+    setIsArchiveEcModalVisible(true);
+  };
+
+  // Archive evacuation center handler from modal
+  const handleArchiveEc = () => {
+    console.log("handleArchiveEc()");
+  };
+
+  // Edit evacuation center handler from modal
+  const handleEditEc = () => {
+    console.log("handleEditEc()");
   };
 
   // Refs
   const locationRef = useRef();
   const ecNameRef = useRef();
   const cityRef = useRef();
-
-  // Logout handler from AuthContext
-  const handleLogout = async () => {
-    try {
-      await logout();
-      toast.success("Logged out successfully");
-      navigate("/");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
+  const editEcLocationRef = useRef();
+  const editEcNameRef = useRef();
+  const editEcCityRef = useRef();
 
   // Add evacuation center handler from modal
   const handleAddEc = async () => {
@@ -123,13 +128,24 @@ const Evacuation = () => {
     });
   };
 
+  // Logout handler from AuthContext
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   // Fetch evacuation centers at page load
   useEffect(() => {
     getEvacuationCenters();
   }, []);
 
   return (
-    <div className="bg-bg-color flex items-start">
+    <div className="bg-bg-color flex items-start overflow-auto">
       {/* Navigation */}
       <aside className="flex flex-col justify-between h-screen">
         {/* Upper Part */}
@@ -189,8 +205,8 @@ const Evacuation = () => {
             />
           </div>
           <div className="flex gap-4">
-            <a onClick={() => console.log(data)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-              Archive
+            <a onClick={() => console.log(current)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+              Test Current
             </a>
             <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Add EC
@@ -237,14 +253,14 @@ const Evacuation = () => {
                             </td>
                             <td className="py-4 whitespace-nowrap text-right text-sm">
                               <div className="flex gap-4">
-                                <button onClick={() => console.log("Test")} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                <button onClick={() => handleViewEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   View
                                 </button>
-                                <button onClick={() => console.log("Test")} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                <button onClick={() => handleEditEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   Edit
                                 </button>
-                                <button onClick={() => console.log("Test")} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                  Delete
+                                <button onClick={() => handleArchiveEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  Archive
                                 </button>
                               </div>
                             </td>
@@ -313,16 +329,104 @@ const Evacuation = () => {
                     </div>
                   </Modal>
                   {/* View Evacuation Center */}
-                  <Modal>
-                    <p>View Evacuation Center</p>
+                  <Modal visible={isViewEcModalVisible} onClose={handleOnClose}>
+                    <div className="flex flex-col items-center">
+                      <h1 className="text-2xl font-medium text-primary-green">{current.evacuationCenterName}</h1>
+                      <p className="text-sm text-primary-gray">ID: {current.evacuationCenterId}</p>
+                    </div>
+                    <div className="flex flex-col mt-4">
+                      <h2 className="text-sm text-safe-black">{current.location}</h2>
+                      <h2 className="text-sm text-primary-gray">
+                        Coordinates: {current.latitude}, {current.longitude}
+                      </h2>
+                    </div>
+                    <div className="flex gap-4 justify-center pb-2">
+                      <button onClick={handleOnClose} className="border-2 border-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
+                        Close
+                      </button>
+                      <button onClick={() => console.log("handleDeleteEc()")} className="bg-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+                        Archive
+                      </button>
+                    </div>
                   </Modal>
                   {/* Edit Evacuation Center */}
-                  <Modal>
-                    <p>Edit Evacuation Center</p>
+                  <Modal visible={isEditEcModalVisible} onClose={handleOnClose}>
+                    <div className="flex flex-col">
+                      <h1 className="text-2xl font-medium text-center text-primary-green">Edit {current.evacuationCenterName}</h1>
+                      <p className="text-sm text-center text-primary-gray">ID: {current.evacuationCenterId}</p>
+                      <div className="mt-6">
+                        <div className="flex">
+                          <div className="flex flex-col w-[80%]">
+                            <label htmlFor="ecname" className="relative text-safe-black">
+                              Evacuation Center Name
+                            </label>
+                            <input
+                              id="ecname"
+                              name="ecname"
+                              type="text"
+                              className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                              placeholder="Evacuation Center Name"
+                              ref={editEcNameRef}
+                              value={current.evacuationCenterName}
+                            />
+                          </div>
+                          <div className="flex flex-col ml-4">
+                            <label htmlFor="city" className="relative text-safe-black">
+                              City
+                            </label>
+                            <input
+                              id="city"
+                              name="city"
+                              type="text"
+                              className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                              placeholder="City"
+                              ref={editEcCityRef}
+                              value={current.city}
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-4">
+                          <label htmlFor="location" className="relative text-safe-black">
+                            Location
+                          </label>
+                          <Autocomplete>
+                            <input
+                              id="location"
+                              name="location"
+                              type="text"
+                              className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                              placeholder="Location"
+                              ref={editEcLocationRef}
+                              value={current.location}
+                            />
+                          </Autocomplete>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 justify-center pb-2">
+                      <button onClick={handleOnClose} className="border-2 border-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
+                        Close
+                      </button>
+                      <button onClick={() => handleEditEc()} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+                        Confirm
+                      </button>
+                    </div>
                   </Modal>
-                  {/* Delete Evacuation Center */}
-                  <Modal>
-                    <p>Delete Evacuation Center</p>
+                  {/* Archive Evacuation Center */}
+                  <Modal visible={isArchiveEcModalVisible} onClose={handleOnClose}>
+                    <p className="text-xl text-center text-safe-black">
+                      Are you sure you want to archive <span className="text-primary-green">{current.evacuationCenterName}</span> in <span className="text-primary-green">{current.city} City</span> with ID of{" "}
+                      <span className="text-primary-green">{current.evacuationCenterId}</span>
+                      <span className="text-primary-green">{current.reportId}</span>?
+                    </p>
+                    <div className="flex gap-4 justify-center pb-2">
+                      <button onClick={handleOnClose} className="border-2 border-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
+                        Close
+                      </button>
+                      <button onClick={() => handleArchiveEc()} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+                        Confirm
+                      </button>
+                    </div>
                   </Modal>
                 </div>
               </div>
