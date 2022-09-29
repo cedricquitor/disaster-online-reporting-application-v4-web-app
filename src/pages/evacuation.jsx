@@ -10,7 +10,7 @@ import Modal from "../components/Modal";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 import { geocodeByAddress } from "react-google-places-autocomplete";
 import { getLatLng } from "react-places-autocomplete";
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref, remove, set } from "firebase/database";
 import { db } from "../configs/firebase";
 import Loading from "../components/Loading";
 
@@ -66,7 +66,20 @@ const Evacuation = () => {
 
   // Archive evacuation center handler from modal
   const handleArchiveEc = () => {
-    console.log("handleArchiveEc()");
+    // Write current evacuation item to ArchivedEvacuationCenters collection
+    set(ref(db, `/ArchivedEvacuationCenters/${current.evacuationCenterId}`), {
+      evacuationCenterId: current.evacuationCenterId,
+      evacuationCenterName: current.evacuationCenterName,
+      city: current.city,
+      location: current.location,
+      latitude: current.latitude,
+      longitude: current.longitude,
+    }).catch((error) => toast.error(error.message));
+    // Delete current evacuation item from EvacuationCenters collection
+    remove(ref(db, `/EvacuationCenters/${current.evacuationCenterId}`))
+      .then(() => toast.success(`Archived ${current.evacuationCenterName} with ID of ${current.evacuationCenterId} successfully`))
+      .then(() => handleOnClose())
+      .catch((error) => toast.error(error.message));
   };
 
   // Edit evacuation center handler from modal
@@ -344,7 +357,7 @@ const Evacuation = () => {
                       <button onClick={handleOnClose} className="border-2 border-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
                         Close
                       </button>
-                      <button onClick={() => console.log("handleDeleteEc()")} className="bg-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+                      <button onClick={() => handleArchiveEc()} className="bg-primary-green mt-8 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
                         Archive
                       </button>
                     </div>
