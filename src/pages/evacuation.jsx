@@ -56,6 +56,9 @@ const Evacuation = () => {
   const handleEditEcModal = (evacuationCenterItem) => {
     setCurrent(evacuationCenterItem);
     setIsEditEcModalVisible(true);
+    setEditEcName(evacuationCenterItem.evacuationCenterName);
+    setEditEcCity(evacuationCenterItem.city);
+    setEditEcLocation(evacuationCenterItem.location);
   };
 
   // Archive evacuation center modal handler
@@ -83,17 +86,44 @@ const Evacuation = () => {
   };
 
   // Edit evacuation center handler from modal
-  const handleEditEc = () => {
-    console.log("handleEditEc()");
+  const handleEditEc = async () => {
+    // Check if all edit input fields have value
+    if (editEcName && editEcCity && editEcLocation) {
+      // If all input fields is filled replace the value on the realtime database with the current value
+      try {
+        // Remove realtime database values
+        remove(ref(db, `/EvacuationCenters/${current.evacuationCenterId}`)).catch((error) => toast.error(error.message));
+
+        // Get current value's geocode, lat, and lng
+        const geocode = await geocodeByAddress(editEcLocation);
+        const { lat, lng } = await getLatLng(geocode[0]);
+
+        // Write new evacuation center details to database
+        set(ref(db, `/EvacuationCenters/${geocode[0].place_id}`), {
+          evacuationCenterId: geocode[0].place_id,
+          evacuationCenterName: editEcName,
+          city: editEcCity,
+          location: editEcLocation,
+          latitude: lat,
+          longitude: lng,
+        })
+          .then(() => toast.success("Updated evacuation center successfully"))
+          .then(() => handleOnClose());
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
   };
 
   // Refs
   const locationRef = useRef();
   const ecNameRef = useRef();
   const cityRef = useRef();
-  const editEcLocationRef = useRef();
-  const editEcNameRef = useRef();
-  const editEcCityRef = useRef();
+
+  // Edit evacuation center states
+  const [editEcLocation, setEditEcLocation] = useState("");
+  const [editEcName, setEditEcName] = useState("");
+  const [editEcCity, setEditEcCity] = useState("");
 
   // Add evacuation center handler from modal
   const handleAddEc = async () => {
@@ -379,8 +409,8 @@ const Evacuation = () => {
                               type="text"
                               className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                               placeholder="Evacuation Center Name"
-                              ref={editEcNameRef}
-                              value={current.evacuationCenterName}
+                              value={editEcName}
+                              onChange={(e) => setEditEcName(e.target.value)}
                             />
                           </div>
                           <div className="flex flex-col ml-4">
@@ -393,8 +423,8 @@ const Evacuation = () => {
                               type="text"
                               className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                               placeholder="City"
-                              ref={editEcCityRef}
-                              value={current.city}
+                              value={editEcCity}
+                              onChange={(e) => setEditEcCity(e.target.value)}
                             />
                           </div>
                         </div>
@@ -409,8 +439,8 @@ const Evacuation = () => {
                               type="text"
                               className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                               placeholder="Location"
-                              ref={editEcLocationRef}
-                              value={current.location}
+                              value={editEcLocation}
+                              onChange={(e) => setEditEcLocation(e.target.value)}
                             />
                           </Autocomplete>
                         </div>
