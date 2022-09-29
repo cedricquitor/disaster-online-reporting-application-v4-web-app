@@ -12,8 +12,19 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import Menu from "./pages/menu";
 import ProtectedRoute from "./helpers/ProtectedRoute";
+import { useState } from "react";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 function App() {
+  // List of libraries to inject to JavaScript API Loader
+  const [libraries] = useState(["places"]);
+
+  // Google API JavaScript SDK loader
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
+    libraries,
+  });
+
   return (
     <>
       <Routes>

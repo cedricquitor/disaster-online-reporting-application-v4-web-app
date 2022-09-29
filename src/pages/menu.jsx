@@ -12,15 +12,6 @@ const Menu = () => {
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
-  // List of libraries to inject to JavaScript API Loader
-  const [libraries] = useState(["places"]);
-
-  // Google API JavaScript SDK loader
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
-    libraries,
-  });
-
   return (
     <div className="flex flex-col h-screen justify-center items-center bg-bg-color">
       <div className="flex flex-col gap-4 bg-safe-white mb-8 px-6 py-6 rounded-2xl w-[440px]">
