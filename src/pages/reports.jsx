@@ -16,6 +16,7 @@ const Reports = () => {
   // State managers
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
+  const [testData, setTestData] = useState({});
   const [current, setCurrent] = useState({});
 
   // Instantiate useNavigate hook for page redirect
@@ -65,6 +66,7 @@ const Reports = () => {
       if (snapshot.exists()) {
         console.log(snapshot.val());
         setData(snapshot.val());
+        setTestData(Object.values(snapshot.val()));
         setIsLoading(false);
       } else {
         console.error("No data");
@@ -155,6 +157,9 @@ const Reports = () => {
               className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green"
             >
               Archive
+            </a>
+            <a onClick={() => console.log(testData)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+              Test JSON
             </a>
           </div>
         </div>
