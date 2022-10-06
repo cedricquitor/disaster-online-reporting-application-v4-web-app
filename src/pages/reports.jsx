@@ -16,7 +16,7 @@ const Reports = () => {
   // State managers
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
-  const [testData, setTestData] = useState({});
+  const [testData, setTestData] = useState([]);
   const [current, setCurrent] = useState({});
 
   // Instantiate useNavigate hook for page redirect
@@ -64,9 +64,15 @@ const Reports = () => {
     const dbRef = ref(db, "/Reports");
     onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
-        setData(snapshot.val());
-        setTestData(Object.values(snapshot.val()));
+        // Test if we can convert it to an array
+        const reports = snapshot.val();
+        const reportsList = [];
+        for (let id in reports) {
+          reportsList.push({ id, ...reports[id] });
+        }
+        setData(reportsList);
+        console.log(reportsList);
+
         setIsLoading(false);
       } else {
         console.error("No data");
@@ -152,14 +158,14 @@ const Reports = () => {
           </div>
           <div className="flex gap-4">
             <a
-              onClick={() => (Object.keys(current).length === 0 ? console.log("No current found!", current) : console.log("Current: ", current))}
+              onClick={() => (current.length === 0 ? console.log("No current found!", current) : console.log("Current: ", current))}
               href="#"
               className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green"
             >
               Archive
             </a>
             <a onClick={() => console.log(testData)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-              Test JSON
+              Test Data
             </a>
           </div>
         </div>
@@ -192,7 +198,7 @@ const Reports = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
-                      {Object.values(data).map((report) => {
+                      {data.map((report) => {
                         const { reportId, disasterType, address, description, fullName, date } = report;
                         return (
                           <tr key={reportId}>
