@@ -74,6 +74,10 @@ const Reports = () => {
         setData(reportsList);
         console.log(reportsList);
 
+        // For Pagination
+        setCurrentData(reportsList.slice(itemOffset, itemOffset + itemsPerPage));
+        setPageCount(Math.ceil(reportsList.length / itemsPerPage));
+
         setIsLoading(false);
       } else {
         console.error("No data");
