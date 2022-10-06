@@ -9,15 +9,16 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { db } from "../configs/firebase";
 import { onValue, ref, remove } from "firebase/database";
+import ReactPaginate from "react-paginate";
 import Loading from "../components/Loading";
 import Modal from "../components/Modal";
 
 const Reports = () => {
   // State managers
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState({});
-  const [testData, setTestData] = useState([]);
-  const [current, setCurrent] = useState({});
+  const [data, setData] = useState([]);
+  const [currentData, setCurrentData] = useState([]);
+  const [current, setCurrent] = useState([]);
 
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
@@ -96,6 +97,29 @@ const Reports = () => {
     getReports();
   }, []);
 
+  // Pagination States
+  const [pageCount, setPageCount] = useState(0);
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+  // Items per page
+  const itemsPerPage = 2;
+
+  // Pagination
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    setCurrentData(data.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(data.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage]);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % data.length;
+    console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
+    setItemOffset(newOffset);
+  };
+
   return (
     <div className="bg-bg-color flex items-start overflow-auto">
       {/* Navigation */}
@@ -164,7 +188,7 @@ const Reports = () => {
             >
               Archive
             </a>
-            <a onClick={() => console.log(testData)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            <a onClick={() => console.log(currentData)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Test Data
             </a>
           </div>
@@ -198,7 +222,7 @@ const Reports = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
-                      {data.map((report) => {
+                      {currentData.map((report) => {
                         const { reportId, disasterType, address, description, fullName, date } = report;
                         return (
                           <tr key={reportId}>
@@ -283,6 +307,8 @@ const Reports = () => {
                     </div>
                   </Modal>
                 </div>
+                {/* Pagination */}
+                <ReactPaginate breakLabel="..." nextLabel="next >" onPageChange={handlePageClick} pageRangeDisplayed={5} pageCount={pageCount} previousLabel="< previous" renderOnZeroPageCount={null} />
               </div>
             </div>
           </div>
