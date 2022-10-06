@@ -311,10 +311,23 @@ const Reports = () => {
                     </div>
                   </Modal>
                 </div>
-                {/* Pagination */}
-                <ReactPaginate breakLabel="..." nextLabel="next >" onPageChange={handlePageClick} pageRangeDisplayed={5} pageCount={pageCount} previousLabel="< previous" renderOnZeroPageCount={null} />
               </div>
             </div>
+            {/* Pagination */}
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="Next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={pageCount}
+              previousLabel="< Prev"
+              renderOnZeroPageCount={null}
+              containerClassName="w-fit mt-4 py-3 mx-auto p-2 rounded-lg flex gap-4 bg-safe-white shadow"
+              pageLinkClassName="outline outline-secondary-gray rounded-md px-2 py-1 text-primary-gray transition hover:outline-primary-gray active:outline-secondary-green"
+              activeLinkClassName="outline-primary-green hover:outline-primary-green"
+              nextClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
+              previousClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
+            />
           </div>
         )}
       </div>
