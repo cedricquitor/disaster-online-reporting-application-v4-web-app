@@ -8,7 +8,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { db } from "../configs/firebase";
-import { onValue, ref, remove } from "firebase/database";
+import { onValue, ref, remove, set } from "firebase/database";
 import ReactPaginate from "react-paginate";
 import Loading from "../components/Loading";
 import Modal from "../components/Modal";
@@ -61,7 +61,28 @@ const Reports = () => {
 
   // Archive report function
   const handleArchiveReport = () => {
-    console.log("Archive report");
+    // Write current report item to ArchivedReports collection
+    set(ref(db, `/ArchivedReports/${current.reportId}`), {
+      Upvotes: current.Upvotes,
+      address: current.address,
+      comments: current.comments,
+      date: current.date,
+      description: current.description,
+      disasterType: current.disasterType,
+      fullName: current.fullName,
+      latitude: current.latitude,
+      longitude: current.longitude,
+      profilePicture: current.profilePicture,
+      reportId: current.reportId,
+      reportPicture: current.reportPicture,
+      upvotes: current.upvotes,
+      userId: current.userId,
+    }).catch((error) => toast.error(error.message));
+    // Delete current evacuation item from EvacuationCenters collection
+    remove(ref(db, `/Reports/${current.reportId}`))
+      .then(() => toast.success(`Archived ${current.disasterType} report with ID of ${current.reportId} successfully`))
+      .then(() => handleOnClose())
+      .catch((error) => toast.error(error.message));
   };
 
   // Delete report function
