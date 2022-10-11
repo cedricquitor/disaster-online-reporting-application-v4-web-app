@@ -21,7 +21,7 @@ function App() {
 
   // Google API JavaScript SDK loader
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAaerEd8Q4K2BQgRVHh4kVXE9YKolhQ5xI",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     libraries,
   });
 

@@ -9,7 +9,7 @@ import { getDatabase } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBWYBUJq2R2uudGnbctTq5I-E8OGAba-Fk",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "dorav4-app.firebaseapp.com",
   databaseURL: "https://dorav4-app-default-rtdb.firebaseio.com",
   projectId: "dorav4-app",

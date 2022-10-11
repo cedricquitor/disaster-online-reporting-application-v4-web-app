@@ -60,10 +60,10 @@ const Reports = () => {
   };
 
   // Query reports
-  const getReports = () => {
+  const getReports = async () => {
     setIsLoading(true);
     const dbRef = ref(db, "/Reports");
-    onValue(dbRef, (snapshot) => {
+    const queryReports = await onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
         // Test if we can convert it to an array
         const reports = snapshot.val();
@@ -75,8 +75,8 @@ const Reports = () => {
         console.log(reportsList);
 
         // For Pagination
-        setCurrentData(reportsList.slice(itemOffset, itemOffset + itemsPerPage));
-        setPageCount(Math.ceil(reportsList.length / itemsPerPage));
+        // setCurrentData(reportsList.slice(itemOffset, itemOffset + itemsPerPage));
+        // setPageCount(Math.ceil(reportsList.length / itemsPerPage));
 
         setIsLoading(false);
       } else {
@@ -110,19 +110,19 @@ const Reports = () => {
   const itemsPerPage = 2;
 
   // Pagination
-  useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    setCurrentData(data.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(data.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage]);
+  // useEffect(() => {
+  //   const endOffset = itemOffset + itemsPerPage;
+  //   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  //   setCurrentData(data.slice(itemOffset, endOffset));
+  //   setPageCount(Math.ceil(data.length / itemsPerPage));
+  // }, [itemOffset, itemsPerPage]);
 
   // Invoke when user click to request another page.
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % data.length;
-    console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
-    setItemOffset(newOffset);
-  };
+  // const handlePageClick = (event) => {
+  //   const newOffset = (event.selected * itemsPerPage) % data.length;
+  //   console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
+  //   setItemOffset(newOffset);
+  // };
 
   return (
     <div className="bg-bg-color flex items-start overflow-auto">
@@ -226,7 +226,7 @@ const Reports = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
-                      {currentData.map((report) => {
+                      {data.map((report) => {
                         const { reportId, disasterType, address, description, fullName, date } = report;
                         return (
                           <tr key={reportId}>
@@ -314,7 +314,7 @@ const Reports = () => {
               </div>
             </div>
             {/* Pagination */}
-            <ReactPaginate
+            {/* <ReactPaginate
               breakLabel="..."
               nextLabel="Next >"
               onPageChange={handlePageClick}
@@ -327,7 +327,7 @@ const Reports = () => {
               activeLinkClassName="outline-primary-green hover:outline-primary-green"
               nextClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
               previousClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
-            />
+            /> */}
           </div>
         )}
       </div>
