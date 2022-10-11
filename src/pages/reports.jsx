@@ -27,13 +27,15 @@ const Reports = () => {
   const { testContext, logout } = useAuthContext();
 
   // Modal states and functions
-  const [isViewModalVisible, setIsViewModalVisible] = useState(false);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isViewReportModalVisible, setIsViewReportModalVisible] = useState(false);
+  const [isArchiveReportModalVisible, setIsArchiveReportModalVisible] = useState(false);
+  const [isDeleteReportModalVisible, setIsDeleteReportModalVisible] = useState(false);
 
   // Close modal handler
   const handleOnClose = () => {
-    setIsViewModalVisible(false);
-    setIsDeleteModalVisible(false);
+    setIsViewReportModalVisible(false);
+    setIsArchiveReportModalVisible(false);
+    setIsDeleteReportModalVisible(false);
 
     // Uncomment after testing to erase the state and avoid leak
     // setCurrent({});
@@ -42,13 +44,24 @@ const Reports = () => {
   // View report modal handler
   const handleViewReportModal = (reportItem) => {
     setCurrent(reportItem);
-    setIsViewModalVisible(true);
+    setIsViewReportModalVisible(true);
+  };
+
+  // Archive report modal handler
+  const handleArchiveReportModal = (reportItem) => {
+    setCurrent(reportItem);
+    setIsArchiveReportModalVisible(true);
   };
 
   // Delete report modal handler
   const handleDeleteReportModal = (reportItem) => {
     setCurrent(reportItem);
-    setIsDeleteModalVisible(true);
+    setIsDeleteReportModalVisible(true);
+  };
+
+  // Archive report function
+  const handleArchiveReport = () => {
+    console.log("Archive report");
   };
 
   // Delete report function
@@ -250,6 +263,9 @@ const Reports = () => {
                                 <button onClick={() => handleViewReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   View
                                 </button>
+                                <button onClick={() => handleArchiveReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  Archive
+                                </button>
                                 <button onClick={() => handleDeleteReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   Delete
                                 </button>
@@ -261,7 +277,7 @@ const Reports = () => {
                     </tbody>
                   </table>
                   {/* View Report Modal */}
-                  <Modal visible={isViewModalVisible} onClose={handleOnClose}>
+                  <Modal visible={isViewReportModalVisible} onClose={handleOnClose}>
                     <div className="flex flex-col items-center">
                       <h1 className="text-2xl font-medium text-primary-green">{current.disasterType}</h1>
                       <p className="text-sm text-primary-gray">ID: {current.reportId}</p>
@@ -295,8 +311,23 @@ const Reports = () => {
                       </div>
                     </div>
                   </Modal>
+                  {/* Archive Report Center */}
+                  <Modal visible={isArchiveReportModalVisible} onClose={handleOnClose}>
+                    <p className="text-xl text-center text-safe-black">
+                      Are you sure you want to archive a <span className="text-primary-green">{current.disasterType}</span> report on <span className="text-primary-green">{current.date}</span> with ID of{" "}
+                      <span className="text-primary-green">{current.reportId}</span>?
+                    </p>
+                    <div className="flex gap-4 justify-center pb-2">
+                      <button onClick={handleOnClose} className="border-2 border-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-primary-green shadow-lg transition hover:bg-secondary-green hover:text-safe-white">
+                        Close
+                      </button>
+                      <button onClick={() => handleArchiveReport()} className="bg-primary-green mt-6 px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+                        Confirm
+                      </button>
+                    </div>
+                  </Modal>
                   {/* Delete Report Modal */}
-                  <Modal visible={isDeleteModalVisible} onClose={handleOnClose}>
+                  <Modal visible={isDeleteReportModalVisible} onClose={handleOnClose}>
                     <p className="text-xl text-center text-safe-black">
                       Are you sure you want to delete a <span className="text-primary-green">{current.disasterType}</span> report on <span className="text-primary-green">{current.date}</span> with ID of{" "}
                       <span className="text-primary-green">{current.reportId}</span>?
