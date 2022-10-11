@@ -19,6 +19,10 @@ const Reports = () => {
   const [data, setData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
   const [current, setCurrent] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Possible search query items
+  const searchQueryItems = ["disasterType", "address", "description", "fullName", "date"];
 
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
@@ -216,16 +220,10 @@ const Reports = () => {
               type="text"
               className="w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
               placeholder="Search parameters"
+              onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
             />
           </div>
           <div className="flex gap-4">
-            <a
-              onClick={() => (current.length === 0 ? console.log("No current found!", current) : console.log("Current: ", current))}
-              href="#"
-              className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green"
-            >
-              Archive
-            </a>
             <a onClick={() => console.log(currentData)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
               Test Data
             </a>
@@ -260,41 +258,44 @@ const Reports = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
-                      {data.map((report) => {
-                        const { reportId, disasterType, address, description, fullName, date } = report;
-                        return (
-                          <tr key={reportId}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center">
-                                <div>
-                                  <div className="text-sm font-medium text-secondary-green">{disasterType}</div>
-                                  <div className="text-sm text-primary-gray">{address}</div>
+                      {/* Filter and map report items */}
+                      {data
+                        .filter((report) => searchQueryItems.some((item) => report[item].toLowerCase().includes(searchQuery)))
+                        .map((report) => {
+                          const { reportId, disasterType, address, description, fullName, date } = report;
+                          return (
+                            <tr key={reportId}>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div>
+                                    <div className="text-sm font-medium text-secondary-green">{disasterType}</div>
+                                    <div className="text-sm text-primary-gray">{address}</div>
+                                  </div>
                                 </div>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-safe-black">{description}</div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-safe-black">{fullName}</div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-safe-black">{date}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                              <div className="flex gap-4">
-                                <button onClick={() => handleViewReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                  View
-                                </button>
-                                <button onClick={() => handleArchiveReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                  Archive
-                                </button>
-                                <button onClick={() => handleDeleteReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                  Delete
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-safe-black">{description}</div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-safe-black">{fullName}</div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-safe-black">{date}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                <div className="flex gap-4">
+                                  <button onClick={() => handleViewReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                    View
+                                  </button>
+                                  <button onClick={() => handleArchiveReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                    Archive
+                                  </button>
+                                  <button onClick={() => handleDeleteReportModal(report)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                    Delete
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                   {/* View Report Modal */}
