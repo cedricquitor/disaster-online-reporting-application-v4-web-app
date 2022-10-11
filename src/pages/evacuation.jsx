@@ -19,6 +19,10 @@ const Evacuation = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
   const [current, setCurrent] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Possible search query items
+  const searchQueryItems = ["evacuationCenterName", "location", "city"];
 
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
@@ -245,6 +249,7 @@ const Evacuation = () => {
               type="text"
               className="w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
               placeholder="Search parameters"
+              onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
             />
           </div>
           <div className="flex gap-4">
@@ -252,7 +257,7 @@ const Evacuation = () => {
               Test Current
             </a>
             <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-              Add EC
+              Add Evac Center
             </a>
           </div>
         </div>
@@ -279,37 +284,39 @@ const Evacuation = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
-                      {Object.values(data).map((evacuationCenter) => {
-                        const { evacuationCenterId, evacuationCenterName, location, city } = evacuationCenter;
-                        return (
-                          <tr key={evacuationCenterId}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center">
-                                <div>
-                                  <div className="text-sm font-medium text-secondary-green">{evacuationCenterName}</div>
-                                  <div className="text-sm text-primary-gray">{location}</div>
+                      {Object.values(data)
+                        .filter((evacuationCenter) => searchQueryItems.some((item) => evacuationCenter[item].toLowerCase().includes(searchQuery)))
+                        .map((evacuationCenter) => {
+                          const { evacuationCenterId, evacuationCenterName, location, city } = evacuationCenter;
+                          return (
+                            <tr key={evacuationCenterId}>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div>
+                                    <div className="text-sm font-medium text-secondary-green">{evacuationCenterName}</div>
+                                    <div className="text-sm text-primary-gray">{location}</div>
+                                  </div>
                                 </div>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-safe-black">{city}</div>
-                            </td>
-                            <td className="py-4 whitespace-nowrap text-right text-sm">
-                              <div className="flex gap-4">
-                                <button onClick={() => handleViewEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                  View
-                                </button>
-                                <button onClick={() => handleEditEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                  Edit
-                                </button>
-                                <button onClick={() => handleArchiveEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                  Archive
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-safe-black">{city}</div>
+                              </td>
+                              <td className="py-4 whitespace-nowrap text-right text-sm">
+                                <div className="flex gap-4">
+                                  <button onClick={() => handleViewEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                    View
+                                  </button>
+                                  <button onClick={() => handleEditEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                    Edit
+                                  </button>
+                                  <button onClick={() => handleArchiveEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                    Archive
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                   {/* Add Evacuation Center Modal */}
