@@ -161,19 +161,31 @@ const Evacuation = () => {
   };
 
   // Query evacuation centers
-  const getEvacuationCenters = () => {
+  const getEvacuationCenters = async () => {
     setIsLoading(true);
     const dbRef = ref(db, "/EvacuationCenters");
-    onValue(dbRef, (snapshot) => {
+    const queryReports = await onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
-        setData(snapshot.val());
+        const ec = snapshot.val();
+        const ecList = [];
+        for (let id in ec) {
+          ecList.push({ id, ...ec[id] });
+        }
+        setData(ecList);
+        console.log(ecList);
+
+        // After getting data, set loading to false
         setIsLoading(false);
       } else {
         console.error("No data");
       }
     });
   };
+
+  // Fetch evacuation centers at page load
+  useEffect(() => {
+    getEvacuationCenters();
+  }, []);
 
   // Logout handler from AuthContext
   const handleLogout = async () => {
@@ -185,11 +197,6 @@ const Evacuation = () => {
       toast.error(error.message);
     }
   };
-
-  // Fetch evacuation centers at page load
-  useEffect(() => {
-    getEvacuationCenters();
-  }, []);
 
   return (
     <div className="bg-bg-color flex items-start overflow-auto">
@@ -284,7 +291,7 @@ const Evacuation = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
-                      {Object.values(data)
+                      {data
                         .filter((evacuationCenter) => searchQueryItems.some((item) => evacuationCenter[item].toLowerCase().includes(searchQuery)))
                         .map((evacuationCenter) => {
                           const { evacuationCenterId, evacuationCenterName, location, city } = evacuationCenter;
