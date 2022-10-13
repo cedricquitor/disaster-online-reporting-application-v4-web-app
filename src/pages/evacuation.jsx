@@ -13,16 +13,33 @@ import { getLatLng } from "react-places-autocomplete";
 import { onValue, ref, remove, set } from "firebase/database";
 import { db } from "../configs/firebase";
 import Loading from "../components/Loading";
+import ReactPaginate from "react-paginate";
 
 const Evacuation = () => {
   // State managers
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState({});
+  const [data, setData] = useState([].slice(0, 8));
+  const [tempData, setTempData] = useState([].slice(0, 8));
   const [current, setCurrent] = useState({});
-  const [searchQuery, setSearchQuery] = useState("");
 
-  // Possible search query items
+  // Search query state and possible search query items
+  const [searchQuery, setSearchQuery] = useState("");
   const searchQueryItems = ["evacuationCenterName", "location", "city"];
+
+  // Search button handler
+  const handleSearch = () => {
+    if (!searchQuery) {
+      setData(tempData);
+    } else {
+      const filtered = tempData.filter((evacuationCenter) => searchQueryItems.some((item) => evacuationCenter[item].toLowerCase().includes(searchQuery)));
+      setData(filtered);
+    }
+  };
+
+  const handleResetSearch = () => {
+    setSearchQuery("");
+    setData(tempData);
+  };
 
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
@@ -172,6 +189,7 @@ const Evacuation = () => {
           ecList.push({ id, ...ec[id] });
         }
         setData(ecList);
+        setTempData(ecList);
         console.log(ecList);
 
         // After getting data, set loading to false
@@ -197,6 +215,18 @@ const Evacuation = () => {
       toast.error(error.message);
     }
   };
+
+  // Pagination states
+  const [pageNumber, setPageNumber] = useState(0);
+  const ecPerPage = 8;
+  const pagesVisited = pageNumber * ecPerPage;
+  const pageCount = Math.ceil(data.length / ecPerPage);
+
+  const handlePageChange = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  // const displayEc = data.slice(pagesVisited, pagesVisited + ecPerPage)
 
   return (
     <div className="bg-bg-color flex items-start overflow-auto">
@@ -247,17 +277,23 @@ const Evacuation = () => {
         <div className="flex flex-row justify-between">
           {/* Search */}
           <div className="flex gap-4">
-            <a href="#" className="bg-primary-green px-[.6rem] py-2 rounded-xl shadow-lg transition hover:bg-secondary-green">
+            <a href="#" onClick={() => handleSearch()} className="bg-primary-green px-[.6rem] py-2 rounded-xl shadow-lg transition hover:bg-secondary-green">
               <HiSearch className="text-safe-white h-8 w-8" />
             </a>
-            <input
-              id="search"
-              name="search"
-              type="text"
-              className="w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-              placeholder="Search parameters"
-              onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
-            />
+            <div className="flex">
+              <input
+                id="search"
+                name="search"
+                type="text"
+                className="w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                placeholder="Search parameters"
+                onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
+                value={searchQuery}
+              />
+              <p onClick={() => handleResetSearch()} className="text-secondary-gray text-sm relative -left-12 my-auto cursor-pointer transition hover:text-primary-gray">
+                Reset
+              </p>
+            </div>
           </div>
           <div className="flex gap-4">
             <a onClick={() => console.log(current)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
@@ -291,39 +327,37 @@ const Evacuation = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
-                      {data
-                        .filter((evacuationCenter) => searchQueryItems.some((item) => evacuationCenter[item].toLowerCase().includes(searchQuery)))
-                        .map((evacuationCenter) => {
-                          const { evacuationCenterId, evacuationCenterName, location, city } = evacuationCenter;
-                          return (
-                            <tr key={evacuationCenterId}>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div>
-                                    <div className="text-sm font-medium text-secondary-green">{evacuationCenterName}</div>
-                                    <div className="text-sm text-primary-gray">{location}</div>
-                                  </div>
+                      {data.slice(pagesVisited, pagesVisited + ecPerPage).map((evacuationCenter) => {
+                        const { evacuationCenterId, evacuationCenterName, location, city } = evacuationCenter;
+                        return (
+                          <tr key={evacuationCenterId}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div>
+                                  <div className="text-sm font-medium text-secondary-green">{evacuationCenterName}</div>
+                                  <div className="text-sm text-primary-gray">{location}</div>
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-safe-black">{city}</div>
-                              </td>
-                              <td className="py-4 whitespace-nowrap text-right text-sm">
-                                <div className="flex gap-4">
-                                  <button onClick={() => handleViewEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                    View
-                                  </button>
-                                  <button onClick={() => handleEditEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                    Edit
-                                  </button>
-                                  <button onClick={() => handleArchiveEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
-                                    Archive
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-safe-black">{city}</div>
+                            </td>
+                            <td className="py-4 whitespace-nowrap text-right text-sm">
+                              <div className="flex gap-4">
+                                <button onClick={() => handleViewEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  View
+                                </button>
+                                <button onClick={() => handleEditEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  Edit
+                                </button>
+                                <button onClick={() => handleArchiveEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
+                                  Archive
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                   {/* Add Evacuation Center Modal */}
@@ -488,6 +522,23 @@ const Evacuation = () => {
                 </div>
               </div>
             </div>
+            {/* Pagination */}
+            {data.length > 8 ? (
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="Next >"
+                previousLabel="< Prev"
+                onPageChange={handlePageChange}
+                // pageRangeDisplayed={5}
+                pageCount={pageCount}
+                // renderOnZeroPageCount={null}
+                containerClassName="w-fit mt-4 py-3 mx-auto p-2 rounded-lg flex gap-4 bg-safe-white shadow"
+                pageLinkClassName="outline outline-secondary-gray rounded-md px-2 py-1 text-primary-gray transition hover:outline-primary-gray active:outline-secondary-green"
+                activeLinkClassName="outline-primary-green hover:outline-primary-green"
+                nextClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
+                previousClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
+              />
+            ) : null}
           </div>
         )}
       </div>

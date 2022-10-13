@@ -19,9 +19,9 @@ const Reports = () => {
   const [data, setData] = useState([]);
   const [currentData, setCurrentData] = useState([]);
   const [current, setCurrent] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  // Possible search query items
+  // Search query state and possible search query items
+  const [searchQuery, setSearchQuery] = useState("");
   const searchQueryItems = ["disasterType", "address", "description", "fullName", "date"];
 
   // Instantiate useNavigate hook for page redirect
