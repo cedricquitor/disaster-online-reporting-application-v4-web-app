@@ -36,6 +36,13 @@ const Evacuation = () => {
     }
   };
 
+  useEffect(() => {
+    if (!searchQuery) {
+      setData(tempData);
+      console.log("Setting to temp");
+    }
+  }, [searchQuery]);
+
   const handleResetSearch = () => {
     setSearchQuery("");
     setData(tempData);

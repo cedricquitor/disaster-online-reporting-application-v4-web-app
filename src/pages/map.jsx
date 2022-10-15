@@ -133,7 +133,11 @@ const Map = () => {
           {/* Markers */}
           {ecData?.map((evacuationCenter) => {
             const location = { lat: evacuationCenter.latitude, lng: evacuationCenter.longitude };
-            return <MarkerF position={location} icon={DoraHomeIcon} />;
+            return (
+              <div key={evacuationCenter.id}>
+                <MarkerF position={location} icon={DoraHomeIcon} clickable onClick={() => console.log(evacuationCenter)} onMouseOver={() => console.log(evacuationCenter)} onMouseOut={() => console.log("Out")} />;
+              </div>
+            );
           })}
         </GoogleMap>
       </div>
