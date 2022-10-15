@@ -16,6 +16,7 @@ const Map = () => {
   const [ecData, setEcData] = useState([]);
   const [tempEcData, setTempEcData] = useState([]);
   const [reportData, setReportData] = useState([]);
+  const [tempReportData, setTempReportData] = useState([]);
 
   // Loading state manager
   const [isLoading, setIsLoading] = useState(false);
@@ -65,9 +66,38 @@ const Map = () => {
     });
   };
 
-  // Fetch evacuation centers at page load
+  // Query reports
+  const getReports = () => {
+    setIsLoading(true);
+    const dbRef = ref(db, "/Reports");
+
+    onValue(dbRef, (snapshot) => {
+      if (snapshot.exists()) {
+        // Test if we can convert it to an array
+        const reports = snapshot.val();
+        const reportsList = [];
+        for (let id in reports) {
+          reportsList.push({ id, ...reports[id] });
+        }
+        setReportData(reportsList);
+        setTempReportData(reportsList);
+        console.log(reportsList);
+
+        // For Pagination
+        // setCurrentData(reportsList.slice(itemOffset, itemOffset + itemsPerPage));
+        // setPageCount(Math.ceil(reportsList.length / itemsPerPage));
+
+        setIsLoading(false);
+      } else {
+        console.error("No data");
+      }
+    });
+  };
+
+  // Fetch evacuation centers and reports at page load
   useEffect(() => {
     getEvacuationCenters();
+    getReports();
   }, []);
 
   const { isLoaded } = useJsApiLoader({
@@ -135,7 +165,15 @@ const Map = () => {
             const location = { lat: evacuationCenter.latitude, lng: evacuationCenter.longitude };
             return (
               <div key={evacuationCenter.id}>
-                <MarkerF position={location} icon={DoraHomeIcon} clickable onClick={() => console.log(evacuationCenter)} onMouseOver={() => console.log(evacuationCenter)} onMouseOut={() => console.log("Out")} />;
+                <MarkerF position={location} icon={DoraHomeIcon} clickable onClick={() => console.log(evacuationCenter)} onMouseOver={() => console.log(evacuationCenter)} onMouseOut={() => console.log("Out Evac")} />;
+              </div>
+            );
+          })}
+          {reportData.map((report) => {
+            const location = { lat: Number(report.latitude), lng: Number(report.longitude) };
+            return (
+              <div key={report.id}>
+                <MarkerF position={location} icon={DoraHomeIcon} clickable onClick={() => console.log(report)} onMouseOver={() => console.log(report)} onMouseOut={() => console.log("Out Report")} />;
               </div>
             );
           })}
