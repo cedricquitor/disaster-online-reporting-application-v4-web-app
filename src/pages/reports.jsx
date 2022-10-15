@@ -117,10 +117,11 @@ const Reports = () => {
   };
 
   // Query reports
-  const getReports = async () => {
+  const getReports = () => {
     setIsLoading(true);
     const dbRef = ref(db, "/Reports");
-    const queryReports = await onValue(dbRef, (snapshot) => {
+
+    onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
         // Test if we can convert it to an array
         const reports = snapshot.val();

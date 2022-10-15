@@ -42,11 +42,11 @@ const Map = () => {
   };
 
   // Query evacuation centers
-  const getEvacuationCenters = async () => {
+  const getEvacuationCenters = () => {
     setIsLoading(true);
     const dbRef = ref(db, "/EvacuationCenters");
 
-    const queryReports = await onValue(dbRef, (snapshot) => {
+    onValue(dbRef, (snapshot) => {
       if (snapshot.exists()) {
         const ec = snapshot.val();
         const ecList = [];
