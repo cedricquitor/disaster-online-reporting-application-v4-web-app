@@ -160,28 +160,15 @@ const Reports = () => {
     getReports();
   }, []);
 
-  // Pagination States
-  const [pageCount, setPageCount] = useState(0);
-  // Here we use item offsets; we could also use page offsets
-  // following the API or data you're working with.
-  const [itemOffset, setItemOffset] = useState(0);
-  // Items per page
-  const itemsPerPage = 2;
+  // Pagination states
+  const [pageNumber, setPageNumber] = useState(0);
+  const reportPerPage = 8;
+  const pagesVisited = pageNumber * reportPerPage;
+  const pageCount = Math.ceil(data.length / reportPerPage);
 
-  // Pagination
-  // useEffect(() => {
-  //   const endOffset = itemOffset + itemsPerPage;
-  //   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  //   setCurrentData(data.slice(itemOffset, endOffset));
-  //   setPageCount(Math.ceil(data.length / itemsPerPage));
-  // }, [itemOffset, itemsPerPage]);
-
-  // Invoke when user click to request another page.
-  // const handlePageClick = (event) => {
-  //   const newOffset = (event.selected * itemsPerPage) % data.length;
-  //   console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
-  //   setItemOffset(newOffset);
-  // };
+  const handlePageChange = ({ selected }) => {
+    setPageNumber(selected);
+  };
 
   return (
     <div className="bg-bg-color flex items-start overflow-auto">
@@ -285,7 +272,7 @@ const Reports = () => {
                     </thead>
                     <tbody className="bg-safe-white divide-y divide-primary-gray">
                       {/* Filter and map report items */}
-                      {data.map((report) => {
+                      {data.slice(pagesVisited, pagesVisited + reportPerPage).map((report) => {
                         const { reportId, disasterType, address, description, fullName, date } = report;
                         return (
                           <tr key={reportId}>
@@ -391,20 +378,22 @@ const Reports = () => {
               </div>
             </div>
             {/* Pagination */}
-            {/* <ReactPaginate
-              breakLabel="..."
-              nextLabel="Next >"
-              onPageChange={handlePageClick}
-              pageRangeDisplayed={5}
-              pageCount={pageCount}
-              previousLabel="< Prev"
-              renderOnZeroPageCount={null}
-              containerClassName="w-fit mt-4 py-3 mx-auto p-2 rounded-lg flex gap-4 bg-safe-white shadow"
-              pageLinkClassName="outline outline-secondary-gray rounded-md px-2 py-1 text-primary-gray transition hover:outline-primary-gray active:outline-secondary-green"
-              activeLinkClassName="outline-primary-green hover:outline-primary-green"
-              nextClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
-              previousClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
-            /> */}
+            {data.length > 8 ? (
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="Next >"
+                previousLabel="< Prev"
+                onPageChange={handlePageChange}
+                // pageRangeDisplayed={5}
+                pageCount={pageCount}
+                // renderOnZeroPageCount={null}
+                containerClassName="w-fit mt-4 py-3 mx-auto p-2 rounded-lg flex gap-4 bg-safe-white shadow"
+                pageLinkClassName="outline outline-secondary-gray rounded-md px-2 py-1 text-primary-gray transition hover:outline-primary-gray active:outline-secondary-green"
+                activeLinkClassName="outline-primary-green hover:outline-primary-green"
+                nextClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
+                previousClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
+              />
+            ) : null}
           </div>
         )}
       </div>
