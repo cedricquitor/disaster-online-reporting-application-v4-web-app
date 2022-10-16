@@ -12,6 +12,10 @@ const Menu = () => {
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
+  const sendPushNotif = () => {
+    console.log("Test");
+  };
+
   return (
     <div className="flex flex-col h-screen justify-center items-center bg-bg-color">
       <div className="flex flex-col gap-4 bg-safe-white mb-8 px-6 py-6 rounded-2xl w-[440px]">
@@ -58,6 +62,9 @@ const Menu = () => {
             <p className="mt-2 text-base text-primary-gray">Manage the app's users</p>
           </div>
         </div>
+        <button onClick={sendPushNotif} className="w-full bg-primary-green mt-2 py-3 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+          Send push notif to users
+        </button>
       </div>
     </div>
   );

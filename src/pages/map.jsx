@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
+import EvacuationCenterPin from "../assets/pins/evacuation_center_pin.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { FaMapMarked } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
@@ -165,15 +166,23 @@ const Map = () => {
             const location = { lat: evacuationCenter.latitude, lng: evacuationCenter.longitude };
             return (
               <div key={evacuationCenter.id}>
-                <MarkerF position={location} icon={DoraHomeIcon} clickable onClick={() => console.log(evacuationCenter)} onMouseOver={() => console.log(evacuationCenter)} onMouseOut={() => console.log("Out Evac")} />;
+                <MarkerF
+                  position={location}
+                  icon={EvacuationCenterPin}
+                  clickable
+                  onClick={() => console.log(evacuationCenter)}
+                  onMouseOver={() => console.log({ current: evacuationCenter, type: "Evacuation Center" })}
+                  onMouseOut={() => console.log("Out Evac")}
+                />
+                ;
               </div>
             );
           })}
-          {reportData.map((report) => {
+          {reportData?.map((report) => {
             const location = { lat: Number(report.latitude), lng: Number(report.longitude) };
             return (
               <div key={report.id}>
-                <MarkerF position={location} icon={DoraHomeIcon} clickable onClick={() => console.log(report)} onMouseOver={() => console.log(report)} onMouseOut={() => console.log("Out Report")} />;
+                <MarkerF position={location} icon={DoraHomeIcon} clickable onClick={() => console.log(report)} onMouseOver={() => console.log({ current: report, type: "Report" })} onMouseOut={() => console.log("Out Report")} />;
               </div>
             );
           })}
