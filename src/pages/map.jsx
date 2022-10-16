@@ -146,6 +146,26 @@ const Map = () => {
     }
   };
 
+  const filterSwitch = (filter) => {
+    switch (filter) {
+      case "all":
+        setEcData(tempEcData);
+        setReportData(tempReportData);
+        toast.success("Now displaying all markers");
+        break;
+      case "reports":
+        setEcData([]);
+        setReportData(tempReportData);
+        toast.success("Now displaying all disaster report markers");
+        break;
+      case "ec":
+        setEcData(tempEcData);
+        setReportData([]);
+        toast.success("Now displaying all evacuation center markers");
+        break;
+    }
+  };
+
   return (
     <div className="bg-bg-color flex items-start">
       {/* Navigation */}
@@ -190,8 +210,19 @@ const Map = () => {
       </aside>
       {/* Main Content Area */}
       <div className="absolute flex w-screen top-[5%] justify-center">
-        <div className="bg-bg-color p-8 z-10">
-          <h1>Sort Evacuation Center by City</h1>
+        <div className="bg-safe-white py-4 px-8 z-10 text-center rounded-2xl shadow-md">
+          <h1 className="text-lg font-medium text-primary-green">Filter Markers</h1>
+          <div className="flex gap-4 mt-2">
+            <button onClick={() => filterSwitch("all")} className="bg-primary-green py-2 px-4 rounded-full font-bold text-sm text-safe-white shadow-lg transition hover:bg-secondary-green">
+              Show All
+            </button>
+            <button onClick={() => filterSwitch("reports")} className="bg-primary-green py-2 px-4 rounded-full font-bold text-sm text-safe-white shadow-lg transition hover:bg-secondary-green">
+              Disaster Reports
+            </button>
+            <button onClick={() => filterSwitch("ec")} className="bg-primary-green py-2 px-4 rounded-full font-bold text-sm text-safe-white shadow-lg transition hover:bg-secondary-green">
+              Evacuation Centers
+            </button>
+          </div>
         </div>
       </div>
       <div className="h-screen w-full z-0">
@@ -231,9 +262,13 @@ const Map = () => {
           })}
         </GoogleMap>
         {/* Hover or clicked items */}
-        {Object.keys(current).length === 0 ? null : current?.type === "Evacuation Center" ? (
+        {Object.keys(current).length === 0 ? (
           <div className="absolute flex w-screen bottom-[5%] justify-center">
-            <div className="bg-safe-white p-8 z-10 text-center rounded-2xl transition duration-1000">
+            <h1 className="text-lg font-medium text-secondary-green">Click on a marker to view details</h1>
+          </div>
+        ) : current?.type === "Evacuation Center" ? (
+          <div className="absolute flex w-screen bottom-[5%] justify-center">
+            <div className="bg-safe-white p-8 z-10 text-center rounded-2xl shadow-md">
               <div className="flex justify-end -mt-6 -mr-6">
                 <IoCloseOutline onClick={() => setCurrent({})} className="h-8 w-8 text-primary-gray cursor-pointer transition hover:text-primary-green active:text-secondary-green" />
               </div>
@@ -248,7 +283,7 @@ const Map = () => {
           </div>
         ) : (
           <div className="absolute flex w-screen bottom-[5%] justify-center">
-            <div className="bg-safe-white p-8 z-10 text-center rounded-2xl transition duration-1000">
+            <div className="bg-safe-white p-8 z-10 text-center rounded-2xl shadow-md">
               <div className="flex justify-end -mt-6 -mr-6">
                 <IoCloseOutline onClick={() => setCurrent({})} className="h-8 w-8 text-primary-gray cursor-pointer transition hover:text-primary-green active:text-secondary-green" />
               </div>
