@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
 import EvacuationCenterPin from "../assets/pins/evacuation_center_pin.svg";
+import EarthquakePin from "../assets/pins/earthquake_pin.svg";
+import FirePin from "../assets/pins/fire_pin.svg";
+import FloodPin from "../assets/pins/flood_pin.svg";
+import HeavyRainPin from "../assets/pins/heavy_rain_pin.svg";
+import LandslidePin from "../assets/pins/landslide_pin.svg";
+import TsunamiPin from "../assets/pins/tsunami_pin.svg";
+import TyphoonPin from "../assets/pins/typhoon_pin.svg";
+import VolcanicEruptionPin from "../assets/pins/volcanic_eruption_pin.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { FaMapMarked } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
@@ -111,6 +119,30 @@ const Map = () => {
     return <Loading />;
   }
 
+  // Function to determine what disaster report icon to display
+  const iconSwitch = (disasterType) => {
+    switch (disasterType) {
+      case "Earthquake":
+        return EarthquakePin;
+      case "Fire":
+        return FirePin;
+      case "Flood":
+        return FloodPin;
+      case "Heavy Rain":
+        return HeavyRainPin;
+      case "Landslide":
+        return LandslidePin;
+      case "Tsunami":
+        return TsunamiPin;
+      case "Typhoon":
+        return TyphoonPin;
+      case "Volcanic Eruption":
+        return VolcanicEruptionPin;
+      default:
+        return DoraHomeIcon;
+    }
+  };
+
   return (
     <div className="bg-bg-color flex items-start">
       {/* Navigation */}
@@ -182,7 +214,7 @@ const Map = () => {
             const location = { lat: Number(report.latitude), lng: Number(report.longitude) };
             return (
               <div key={report.id}>
-                <MarkerF position={location} icon={DoraHomeIcon} clickable onClick={() => console.log(report)} onMouseOver={() => console.log({ current: report, type: "Report" })} onMouseOut={() => console.log("Out Report")} />;
+                <MarkerF position={location} icon={iconSwitch(report.disasterType)} clickable onClick={() => console.log(report)} onMouseOver={() => console.log({ current: report, type: "Report" })} onMouseOut={() => console.log("Out Report")} />;
               </div>
             );
           })}
