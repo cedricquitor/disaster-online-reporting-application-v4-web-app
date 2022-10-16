@@ -11,7 +11,7 @@ import TyphoonPin from "../assets/pins/typhoon_pin.svg";
 import VolcanicEruptionPin from "../assets/pins/volcanic_eruption_pin.svg";
 import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { FaMapMarked } from "react-icons/fa";
-import { IoLogOut } from "react-icons/io5";
+import { IoCloseOutline, IoLogOut } from "react-icons/io5";
 import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useJsApiLoader, GoogleMap, MarkerF, Autocomplete, Marker } from "@react-google-maps/api";
@@ -26,6 +26,9 @@ const Map = () => {
   const [tempEcData, setTempEcData] = useState([]);
   const [reportData, setReportData] = useState([]);
   const [tempReportData, setTempReportData] = useState([]);
+
+  // Currently hovered/selected state
+  const [current, setCurrent] = useState({});
 
   // Loading state manager
   const [isLoading, setIsLoading] = useState(false);
@@ -202,9 +205,9 @@ const Map = () => {
                   position={location}
                   icon={EvacuationCenterPin}
                   clickable
-                  onClick={() => console.log(evacuationCenter)}
-                  onMouseOver={() => console.log({ current: evacuationCenter, type: "Evacuation Center" })}
-                  onMouseOut={() => console.log("Out Evac")}
+                  onClick={() => setCurrent({ data: evacuationCenter, type: "Evacuation Center" })}
+                  onMouseOver={() => console.log({ data: evacuationCenter, type: "Evacuation Center" })}
+                  onMouseOut={() => console.log("Evac Out")}
                 />
                 ;
               </div>
@@ -214,11 +217,58 @@ const Map = () => {
             const location = { lat: Number(report.latitude), lng: Number(report.longitude) };
             return (
               <div key={report.id}>
-                <MarkerF position={location} icon={iconSwitch(report.disasterType)} clickable onClick={() => console.log(report)} onMouseOver={() => console.log({ current: report, type: "Report" })} onMouseOut={() => console.log("Out Report")} />;
+                <MarkerF
+                  position={location}
+                  icon={iconSwitch(report.disasterType)}
+                  clickable
+                  onClick={() => setCurrent({ data: report, type: "Report" })}
+                  onMouseOver={() => console.log({ data: report, type: "Report" })}
+                  onMouseOut={() => console.log("Out Report")}
+                />
+                ;
               </div>
             );
           })}
         </GoogleMap>
+        {/* Hover or clicked items */}
+        {Object.keys(current).length === 0 ? null : current?.type === "Evacuation Center" ? (
+          <div className="absolute flex w-screen bottom-[5%] justify-center">
+            <div className="bg-safe-white p-8 z-10 text-center rounded-2xl transition duration-1000">
+              <div className="flex justify-end -mt-6 -mr-6">
+                <IoCloseOutline onClick={() => setCurrent({})} className="h-8 w-8 text-primary-gray cursor-pointer transition hover:text-primary-green active:text-secondary-green" />
+              </div>
+              <h1 className="text-xl font-medium text-primary-green">
+                {current?.data?.evacuationCenterName} <span className="text-primary-gray font-normal">in</span> {current?.data?.city} City
+              </h1>
+              <h2 className="text-sm text-safe-black">{current?.data?.location}</h2>
+              <h2 className="text-sm text-primary-gray">
+                Coordinates: {current?.data?.latitude}, {current?.data?.longitude}
+              </h2>
+            </div>
+          </div>
+        ) : (
+          <div className="absolute flex w-screen bottom-[5%] justify-center">
+            <div className="bg-safe-white p-8 z-10 text-center rounded-2xl transition duration-1000">
+              <div className="flex justify-end -mt-6 -mr-6">
+                <IoCloseOutline onClick={() => setCurrent({})} className="h-8 w-8 text-primary-gray cursor-pointer transition hover:text-primary-green active:text-secondary-green" />
+              </div>
+              <h1 className="text-xl font-medium text-primary-green">
+                {current?.data?.disasterType} Report <span className="font-normal text-primary-gray">by</span> {current?.data?.fullName}
+              </h1>
+              <h2 className="text-sm text-safe-black">{current?.data?.address}</h2>
+              <h2 className="text-sm text-primary-gray">
+                Coordinates: {current?.data?.latitude}, {current?.data?.longitude}
+              </h2>
+              <div className="flex flex-col mt-2">
+                <h2 className="text-sm text-safe-black">Report Date: {current?.data?.date}</h2>
+                <h2 className="text-sm text-safe-black">
+                  Report Stats: {current?.data?.upvotes} upvotes and {current?.data?.comments} comments
+                </h2>
+                <h2 className="text-sm text-safe-black">Report Description: {current?.data?.description}</h2>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
