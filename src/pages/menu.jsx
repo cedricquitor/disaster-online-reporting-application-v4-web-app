@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FaMapMarked } from "react-icons/fa";
 import { HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
+import Modal from "../components/Modal";
 import { useAuthContext } from "../contexts/AuthContext";
 
 const Menu = () => {
@@ -12,6 +13,21 @@ const Menu = () => {
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
+  // Push notif state manager
+  const [isSendPushNotifVisible, setIsSendPushNotifVisible] = useState(false);
+  const [userTokens, setUserTokens] = useState([]);
+
+  // Close modal handler
+  const handleOnClose = () => {
+    setIsSendPushNotifVisible(false);
+  };
+
+  // Send push notif modal handler
+  const handleSendPushNotifModal = () => {
+    setIsSendPushNotifVisible(true);
+  };
+
+  // Sends a push notif to users via POST HTTP request
   const sendPushNotif = () => {
     console.log("Test");
   };
@@ -62,10 +78,13 @@ const Menu = () => {
             <p className="mt-2 text-base text-primary-gray">Manage the app's users</p>
           </div>
         </div>
-        <button onClick={sendPushNotif} className="w-full bg-primary-green mt-2 py-3 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+        <button onClick={handleSendPushNotifModal} className="w-full bg-primary-green mt-2 py-3 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
           Send push notif to users
         </button>
       </div>
+      <Modal visible={isSendPushNotifVisible} onClose={handleOnClose}>
+        <h1>Send Push Notif</h1>
+      </Modal>
     </div>
   );
 };

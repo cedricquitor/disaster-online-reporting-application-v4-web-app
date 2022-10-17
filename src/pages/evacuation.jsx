@@ -372,36 +372,34 @@ const Evacuation = () => {
                   <Modal visible={isAddEcModalVisible} onClose={handleOnClose}>
                     <div className="flex flex-col">
                       <h1 className="text-2xl font-medium text-center text-primary-green">Add Evacuation Center</h1>
-                      <div className="mt-6">
-                        <div className="flex">
-                          <div className="flex flex-col w-[80%]">
-                            <label htmlFor="ecname" className="relative text-safe-black">
-                              Evacuation Center Name
-                            </label>
-                            <input
-                              id="ecname"
-                              name="ecname"
-                              type="text"
-                              className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                              placeholder="Evacuation Center Name"
-                              ref={ecNameRef}
-                            />
-                          </div>
-                          <div className="flex flex-col ml-4">
-                            <label htmlFor="city" className="relative text-safe-black">
-                              City
-                            </label>
-                            <input
-                              id="city"
-                              name="city"
-                              type="text"
-                              className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                              placeholder="City"
-                              ref={cityRef}
-                            />
-                          </div>
+                      <div className="mt-6 flex flex-col gap-2">
+                        <div className="flex flex-col">
+                          <label htmlFor="ecname" className="relative text-safe-black">
+                            Evacuation Center Name
+                          </label>
+                          <input
+                            id="ecname"
+                            name="ecname"
+                            type="text"
+                            className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                            placeholder="Evacuation Center Name"
+                            ref={ecNameRef}
+                          />
                         </div>
-                        <div className="mt-4">
+                        <div className="flex flex-col">
+                          <label htmlFor="city" className="relative text-safe-black">
+                            City
+                          </label>
+                          <input
+                            id="city"
+                            name="city"
+                            type="text"
+                            className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                            placeholder="City"
+                            ref={cityRef}
+                          />
+                        </div>
+                        <div className="flex flex-col">
                           <label htmlFor="location" className="relative text-safe-black">
                             Location
                           </label>
@@ -453,38 +451,36 @@ const Evacuation = () => {
                     <div className="flex flex-col">
                       <h1 className="text-2xl font-medium text-center text-primary-green">Edit {current.evacuationCenterName}</h1>
                       <p className="text-sm text-center text-primary-gray">ID: {current.evacuationCenterId}</p>
-                      <div className="mt-6">
-                        <div className="flex">
-                          <div className="flex flex-col w-[80%]">
-                            <label htmlFor="ecname" className="relative text-safe-black">
-                              Evacuation Center Name
-                            </label>
-                            <input
-                              id="ecname"
-                              name="ecname"
-                              type="text"
-                              className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                              placeholder="Evacuation Center Name"
-                              value={editEcName}
-                              onChange={(e) => setEditEcName(e.target.value)}
-                            />
-                          </div>
-                          <div className="flex flex-col ml-4">
-                            <label htmlFor="city" className="relative text-safe-black">
-                              City
-                            </label>
-                            <input
-                              id="city"
-                              name="city"
-                              type="text"
-                              className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
-                              placeholder="City"
-                              value={editEcCity}
-                              onChange={(e) => setEditEcCity(e.target.value)}
-                            />
-                          </div>
+                      <div className="mt-6 flex flex-col gap-2">
+                        <div className="flex flex-col">
+                          <label htmlFor="ecname" className="relative text-safe-black">
+                            Evacuation Center Name
+                          </label>
+                          <input
+                            id="ecname"
+                            name="ecname"
+                            type="text"
+                            className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                            placeholder="Evacuation Center Name"
+                            value={editEcName}
+                            onChange={(e) => setEditEcName(e.target.value)}
+                          />
                         </div>
-                        <div className="mt-4">
+                        <div className="flex flex-col">
+                          <label htmlFor="city" className="relative text-safe-black">
+                            City
+                          </label>
+                          <input
+                            id="city"
+                            name="city"
+                            type="text"
+                            className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                            placeholder="City"
+                            value={editEcCity}
+                            onChange={(e) => setEditEcCity(e.target.value)}
+                          />
+                        </div>
+                        <div className="flex flex-col">
                           <label htmlFor="location" className="relative text-safe-black">
                             Location
                           </label>

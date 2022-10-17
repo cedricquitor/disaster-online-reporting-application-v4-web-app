@@ -9,12 +9,12 @@ import LandslidePin from "../assets/pins/landslide_pin.svg";
 import TsunamiPin from "../assets/pins/tsunami_pin.svg";
 import TyphoonPin from "../assets/pins/typhoon_pin.svg";
 import VolcanicEruptionPin from "../assets/pins/volcanic_eruption_pin.svg";
-import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
+import { HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { FaMapMarked } from "react-icons/fa";
 import { IoCloseOutline, IoLogOut } from "react-icons/io5";
 import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { useJsApiLoader, GoogleMap, MarkerF, Autocomplete, Marker } from "@react-google-maps/api";
+import { useJsApiLoader, GoogleMap, MarkerF } from "@react-google-maps/api";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading";
 import { onValue, ref } from "firebase/database";
@@ -34,7 +34,7 @@ const Map = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Instantiate AuthContext for use
-  const { testContext, logout } = useAuthContext();
+  const { logout } = useAuthContext();
 
   // List of libraries to inject to JavaScript API Loader
   const [libraries] = useState(["places"]);
@@ -163,6 +163,8 @@ const Map = () => {
         setReportData([]);
         toast.success("Now displaying all evacuation center markers");
         break;
+      default:
+        break;
     }
   };
 
@@ -209,7 +211,7 @@ const Map = () => {
         </div>
       </aside>
       {/* Main Content Area */}
-      <div className="absolute flex w-screen top-[5%] justify-center">
+      <div className="absolute flex top-[5%] justify-center w-screen">
         <div className="bg-safe-white py-4 px-8 z-10 text-center rounded-2xl shadow-md">
           <h1 className="text-lg font-medium text-primary-green">Filter Markers</h1>
           <div className="flex gap-4 mt-2">
