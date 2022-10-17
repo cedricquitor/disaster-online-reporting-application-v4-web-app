@@ -3,6 +3,8 @@ import { FaMapMarked } from "react-icons/fa";
 import { HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
+import { db } from "../configs/firebase";
+import { onValue, ref } from "firebase/database";
 import { useAuthContext } from "../contexts/AuthContext";
 
 const Menu = () => {
@@ -15,6 +17,28 @@ const Menu = () => {
   // Push notif state manager
   const [isSendPushNotifVisible, setIsSendPushNotifVisible] = useState(false);
   const [userTokens, setUserTokens] = useState([]);
+
+  // Get user tokens from realtime database
+  const getUserTokens = () => {
+    const dbRef = ref(db, "/Tokens");
+
+    onValue(dbRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const tokens = snapshot.val();
+        const tokensList = [];
+        for (let id in tokens) {
+          tokensList.push(tokens[id].token);
+        }
+
+        setUserTokens(tokensList);
+        console.log(tokensList);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getUserTokens();
+  }, []);
 
   // Close modal handler
   const handleOnClose = () => {
@@ -29,6 +53,8 @@ const Menu = () => {
   // Sends a push notif to users via POST HTTP request
   const sendPushNotif = () => {
     console.log("Test");
+
+    fetch();
   };
 
   // Refs
