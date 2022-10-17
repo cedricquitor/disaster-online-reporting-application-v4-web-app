@@ -7,6 +7,7 @@ import { db } from "../configs/firebase";
 import { onValue, ref } from "firebase/database";
 import { useAuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
+import Loading from "../components/Loading";
 
 const Menu = () => {
   // Instantiate AuthContext for use
@@ -15,12 +16,16 @@ const Menu = () => {
   // Instantiate useNavigate hook for page redirect
   const navigate = useNavigate();
 
+  // State manager
+  const [isLoading, setIsLoading] = useState(false);
+
   // Push notif state manager
   const [isSendPushNotifVisible, setIsSendPushNotifVisible] = useState(false);
   const [userTokens, setUserTokens] = useState([]);
 
   // Get user tokens from realtime database
   const getUserTokens = () => {
+    setIsLoading(true);
     const dbRef = ref(db, "/Tokens");
 
     onValue(dbRef, (snapshot) => {
@@ -33,6 +38,8 @@ const Menu = () => {
 
         setUserTokens(tokensList);
         console.log(tokensList);
+
+        setIsLoading(false);
       }
     });
   };
@@ -97,6 +104,10 @@ const Menu = () => {
   // Refs
   const pushNotifTitleRef = useRef();
   const pushNotifBodyTextRef = useRef();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col h-screen justify-center items-center bg-bg-color">
