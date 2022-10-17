@@ -140,6 +140,8 @@ const Evacuation = () => {
       } catch (error) {
         toast.error(error.message);
       }
+    } else {
+      toast.error("Please fill up all input fields");
     }
   };
 

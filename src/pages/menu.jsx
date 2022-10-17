@@ -6,6 +6,7 @@ import Modal from "../components/Modal";
 import { db } from "../configs/firebase";
 import { onValue, ref } from "firebase/database";
 import { useAuthContext } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const Menu = () => {
   // Instantiate AuthContext for use
@@ -54,7 +55,43 @@ const Menu = () => {
   const sendPushNotif = () => {
     console.log("Test");
 
-    fetch();
+    const data = {
+      registration_ids: ["token_1", "token_2"],
+      notification: {
+        title: pushNotifTitleRef.current.value,
+        body: pushNotifBodyTextRef.current.value,
+      },
+    };
+
+    const url = "https://fcm.googleapis.com/fcm/send";
+
+    if (pushNotifTitleRef.current.value && pushNotifBodyTextRef.current.value) {
+      fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: "key=AAAAVh7Sz58:APA91bHSgorqf8ukz4jLwum0PBulpNHrGtkwr2-d1Pz6PfB3bolhBh28XEjx7b1UCAq98vhOuBwcwdHCmjJDf2yD-ZiDj4TpGtfp3X3SOz4ToJJmRM_6j_PN2n6CP43jcZZdNnjE7nlo",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            toast.success("Push notification successfully sent, server responded with HTTP 200");
+          } else {
+            toast.info(`Server responded with HTTP ${response.status}`);
+          }
+
+          // Close modal
+          handleOnClose();
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("An error on sending push notif has occured");
+        });
+    } else {
+      toast.error("Please fill up all input fields");
+    }
   };
 
   // Refs
