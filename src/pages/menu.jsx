@@ -1,5 +1,4 @@
-import { useJsApiLoader } from "@react-google-maps/api";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaMapMarked } from "react-icons/fa";
 import { HiFolder, HiOfficeBuilding } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
@@ -31,6 +30,10 @@ const Menu = () => {
   const sendPushNotif = () => {
     console.log("Test");
   };
+
+  // Refs
+  const pushNotifTitleRef = useRef();
+  const pushNotifBodyTextRef = useRef();
 
   return (
     <div className="flex flex-col h-screen justify-center items-center bg-bg-color">
@@ -83,7 +86,40 @@ const Menu = () => {
         </button>
       </div>
       <Modal visible={isSendPushNotifVisible} onClose={handleOnClose}>
-        <h1>Send Push Notif</h1>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-medium text-center text-primary-green">Send a push notification</h1>
+          <div className="mt-6 flex flex-col gap-2">
+            <div className="flex flex-col">
+              <label htmlFor="pushnotiftitle" className="relative text-safe-black">
+                Push Notification Title
+              </label>
+              <input
+                id="pushnotiftitle"
+                name="pushnotiftitle"
+                type="text"
+                className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                placeholder="Push Notification Title"
+                ref={pushNotifTitleRef}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="pushnotifbodytext" className="relative text-safe-black">
+                Body Text
+              </label>
+              <input
+                id="pushnotifbodytext"
+                name="pushnotifbodytext"
+                type="text"
+                className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                placeholder="Body Text"
+                ref={pushNotifBodyTextRef}
+              />
+            </div>
+          </div>
+          <button onClick={() => sendPushNotif()} className="w-full bg-primary-green mt-6 py-3 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            Send push notif
+          </button>
+        </div>
       </Modal>
     </div>
   );
