@@ -14,6 +14,7 @@ import { onValue, ref, remove, set } from "firebase/database";
 import { db } from "../configs/firebase";
 import Loading from "../components/Loading";
 import ReactPaginate from "react-paginate";
+import NoResultsFound from "../components/NoResultsFound";
 
 const Evacuation = () => {
   // State managers
@@ -318,7 +319,7 @@ const Evacuation = () => {
         {isLoading ? (
           <Loading />
         ) : data.length === 0 ? (
-          <p>No data found</p>
+          <NoResultsFound resetQuery={handleResetSearch} />
         ) : (
           <div className="flex flex-col w-11/12 xl:w-10/12 2xl:w-5/6 mx-auto mt-8">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
