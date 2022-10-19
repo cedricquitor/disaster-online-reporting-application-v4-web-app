@@ -245,6 +245,8 @@ const Reports = () => {
         {/* Tables Area */}
         {isLoading ? (
           <Loading />
+        ) : data.length === 0 ? (
+          <p>No data found</p>
         ) : (
           <div className="flex flex-col w-11/12 xl:w-10/12 2xl:w-5/6 mx-auto mt-8">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
