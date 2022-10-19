@@ -3,7 +3,7 @@ import NoResultsIllu from "../assets/no_results_illu.svg";
 
 const NoResultsFound = ({ resetQuery }) => {
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center h-screen -mt-36">
       <img src={NoResultsIllu} className="h-[80%] w-[80%] md:h-[50%] md:w-[50%] lg:h-[35%] lg:w-[35%]" alt="Page Not Found Illustration" />
       <h1 className="my-4 text-4xl md:text-5xl font-medium text-primary-green">No results found...</h1>
       <p className="text-primary-gray text-base md:text-sm text-center">

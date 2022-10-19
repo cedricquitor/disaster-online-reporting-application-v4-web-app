@@ -12,6 +12,7 @@ import { onValue, ref, remove, set } from "firebase/database";
 import ReactPaginate from "react-paginate";
 import Loading from "../components/Loading";
 import Modal from "../components/Modal";
+import NoResultsFound from "../components/NoResultsFound";
 
 const Reports = () => {
   // State managers
@@ -230,6 +231,7 @@ const Reports = () => {
                 className="w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                 placeholder="Search parameters"
                 onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
+                value={searchQuery}
               />
               <p onClick={() => handleResetSearch()} className="text-secondary-gray text-sm relative -left-12 my-auto cursor-pointer transition hover:text-primary-gray">
                 Reset
@@ -246,7 +248,7 @@ const Reports = () => {
         {isLoading ? (
           <Loading />
         ) : data.length === 0 ? (
-          <p>No data found</p>
+          <NoResultsFound resetQuery={handleResetSearch} />
         ) : (
           <div className="flex flex-col w-11/12 xl:w-10/12 2xl:w-5/6 mx-auto mt-8">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
