@@ -306,14 +306,9 @@ const Evacuation = () => {
               </p>
             </div>
           </div>
-          <div className="flex gap-4">
-            <a onClick={() => console.log(current)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-              Test Current
-            </a>
-            <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-              Add Evac Center
-            </a>
-          </div>
+          <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
+            Add Evac Center
+          </a>
         </div>
         {/* Table Content Here */}
         {isLoading ? (

@@ -238,11 +238,6 @@ const Reports = () => {
               </p>
             </div>
           </div>
-          <div className="flex gap-4">
-            <a onClick={() => console.log(currentData)} href="#" className="bg-primary-green px-10 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-              Test Data
-            </a>
-          </div>
         </div>
         {/* Tables Area */}
         {isLoading ? (
