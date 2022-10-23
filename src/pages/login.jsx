@@ -30,6 +30,7 @@ const Login = () => {
       await signIn(email, password);
       console.log("Login");
       navigate("/");
+      toast.success("Logged in successfully");
     } catch (error) {
       setError(error.message);
       toast.error(error.message);
