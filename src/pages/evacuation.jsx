@@ -34,6 +34,10 @@ const Evacuation = () => {
     } else {
       const filtered = tempData.filter((evacuationCenter) => searchQueryItems.some((item) => evacuationCenter[item].toLowerCase().includes(searchQuery)));
       setData(filtered);
+
+      if (data.length > 6) {
+        setPageNumber(0);
+      }
     }
   };
 
@@ -229,7 +233,7 @@ const Evacuation = () => {
 
   // Pagination states
   const [pageNumber, setPageNumber] = useState(0);
-  const ecPerPage = 8;
+  const ecPerPage = 6;
   const pagesVisited = pageNumber * ecPerPage;
   const pageCount = Math.ceil(data.length / ecPerPage);
 

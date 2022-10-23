@@ -28,8 +28,16 @@ const Reports = () => {
 
   // Search button handler
   const handleSearch = () => {
-    const filtered = tempData.filter((report) => searchQueryItems.some((item) => report[item].toLowerCase().includes(searchQuery)));
-    setData(filtered);
+    if (!searchQuery) {
+      setData(tempData);
+    } else {
+      const filtered = tempData.filter((report) => searchQueryItems.some((item) => report[item].toLowerCase().includes(searchQuery)));
+      setData(filtered);
+
+      if (data.length > 6) {
+        setPageNumber(0);
+      }
+    }
   };
 
   useEffect(() => {
@@ -163,7 +171,7 @@ const Reports = () => {
 
   // Pagination states
   const [pageNumber, setPageNumber] = useState(0);
-  const reportPerPage = 8;
+  const reportPerPage = 6;
   const pagesVisited = pageNumber * reportPerPage;
   const pageCount = Math.ceil(data.length / reportPerPage);
 
