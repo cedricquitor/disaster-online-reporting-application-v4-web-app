@@ -63,7 +63,7 @@ const Menu = () => {
     console.log("Test");
 
     const data = {
-      registration_ids: ["token_1", "token_2"],
+      registration_ids: userTokens,
       notification: {
         title: pushNotifTitleRef.current.value,
         body: pushNotifBodyTextRef.current.value,
@@ -89,6 +89,7 @@ const Menu = () => {
             toast.info(`Server responded with HTTP ${response.status}`);
           }
 
+          console.log(data);
           // Close modal
           handleOnClose();
         })
