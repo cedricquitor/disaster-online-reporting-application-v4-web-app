@@ -42,7 +42,7 @@ const Map = () => {
   const navigate = useNavigate();
 
   // Center of map (Currently UST's location)
-  const defaultCoordinates = { lat: 14.609817753661206, lng: 120.98943292296173 };
+  const [defaultCoordinates, setdefaultCoordinates] = useState({ lat: 14.609817753661206, lng: 120.98943292296173 });
 
   const handleLogout = async () => {
     try {
@@ -223,6 +223,9 @@ const Map = () => {
             </button>
             <button onClick={() => filterSwitch("ec")} className="bg-primary-green py-2 px-4 rounded-full font-bold text-sm text-safe-white shadow-lg transition hover:bg-secondary-green">
               Evacuation Centers
+            </button>
+            <button onClick={() => setdefaultCoordinates(null)} className="bg-primary-green py-2 px-4 rounded-full font-bold text-sm text-safe-white shadow-lg transition hover:bg-secondary-green">
+              Test
             </button>
           </div>
         </div>
