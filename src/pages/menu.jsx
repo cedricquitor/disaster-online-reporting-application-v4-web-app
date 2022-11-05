@@ -18,6 +18,7 @@ const Menu = () => {
 
   // State manager
   const [isLoading, setIsLoading] = useState(false);
+  const [areThereTokens, setAreThereTokens] = useState(false);
 
   // Push notif state manager
   const [isSendPushNotifVisible, setIsSendPushNotifVisible] = useState(false);
@@ -37,8 +38,13 @@ const Menu = () => {
         }
 
         setUserTokens(tokensList);
+        setAreThereTokens(true);
         console.log(tokensList);
 
+        setIsLoading(false);
+      } else {
+        // If there are no user tokens available
+        setAreThereTokens(false);
         setIsLoading(false);
       }
     });
@@ -194,6 +200,7 @@ const Menu = () => {
           <button onClick={() => sendPushNotif()} className="w-full bg-primary-green mt-6 py-3 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
             Send push notif
           </button>
+          {areThereTokens ? null : <p className="mt-2 text-sm text-center text-[#b91c1c]">There are no users currently logged in to receive a push notification</p>}
         </div>
       </Modal>
     </div>
