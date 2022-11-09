@@ -15,6 +15,7 @@ import { db } from "../configs/firebase";
 import Loading from "../components/Loading";
 import ReactPaginate from "react-paginate";
 import NoResultsFound from "../components/NoResultsFound";
+import TruncateText from "../components/TruncateText";
 
 const Evacuation = () => {
   // State managers
@@ -347,7 +348,9 @@ const Evacuation = () => {
                               <div className="flex items-center">
                                 <div>
                                   <div className="text-sm font-medium text-secondary-green">{evacuationCenterName}</div>
-                                  <div className="text-sm text-primary-gray">{location}</div>
+                                  <div className="text-sm text-primary-gray">
+                                    <TruncateText length={75}>{location}</TruncateText>
+                                  </div>
                                 </div>
                               </div>
                             </td>

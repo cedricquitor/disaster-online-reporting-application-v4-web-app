@@ -13,6 +13,7 @@ import ReactPaginate from "react-paginate";
 import Loading from "../components/Loading";
 import Modal from "../components/Modal";
 import NoResultsFound from "../components/NoResultsFound";
+import TruncateText from "../components/TruncateText";
 
 const Reports = () => {
   // State managers
@@ -287,12 +288,16 @@ const Reports = () => {
                               <div className="flex items-center">
                                 <div>
                                   <div className="text-sm font-medium text-secondary-green">{disasterType}</div>
-                                  <div className="text-sm text-primary-gray">{address}</div>
+                                  <div className="text-sm text-primary-gray">
+                                    <TruncateText length={30}>{address}</TruncateText>
+                                  </div>
                                 </div>
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-safe-black">{description}</div>
+                              <div className="text-sm text-safe-black">
+                                <TruncateText length={30}>{description}</TruncateText>
+                              </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm text-safe-black">{fullName}</div>
