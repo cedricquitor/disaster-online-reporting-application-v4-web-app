@@ -224,9 +224,6 @@ const Map = () => {
             <button onClick={() => filterSwitch("ec")} className="bg-primary-green py-2 px-4 rounded-full font-bold text-sm text-safe-white shadow-lg transition hover:bg-secondary-green">
               Evacuation Centers
             </button>
-            <button onClick={() => setdefaultCoordinates(null)} className="bg-primary-green py-2 px-4 rounded-full font-bold text-sm text-safe-white shadow-lg transition hover:bg-secondary-green">
-              Test
-            </button>
           </div>
         </div>
       </div>
