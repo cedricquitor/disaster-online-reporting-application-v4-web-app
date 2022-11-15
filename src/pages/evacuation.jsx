@@ -168,7 +168,7 @@ const Evacuation = () => {
       // If all input fields have value, insert item to real-time database
       try {
         // Get geocode using the input in location textbox
-        const geocode = await geocodeByAddress(locationRef.current.value);
+        const geocode = await geocodeByAddress(locationRef.current.value).catch(toast.error("Input location is invalid!"));
         const { lat, lng } = await getLatLng(geocode[0]);
 
         // Add evacuation center details to database
