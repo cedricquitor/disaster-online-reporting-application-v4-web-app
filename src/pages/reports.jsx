@@ -390,7 +390,7 @@ const Reports = () => {
               </div>
             </div>
             {/* Pagination */}
-            {data.length > 8 ? (
+            {data.length > 6 ? (
               <ReactPaginate
                 breakLabel="..."
                 nextLabel="Next >"
