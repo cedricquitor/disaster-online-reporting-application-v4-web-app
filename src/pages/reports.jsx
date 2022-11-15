@@ -96,7 +96,6 @@ const Reports = () => {
   const handleArchiveReport = () => {
     // Write current report item to ArchivedReports collection
     set(ref(db, `/ArchivedReports/${current.reportId}`), {
-      Upvotes: current.Upvotes,
       address: current.address,
       comments: current.comments,
       date: current.date,
@@ -110,6 +109,8 @@ const Reports = () => {
       reportPicture: current.reportPicture,
       upvotes: current.upvotes,
       userId: current.userId,
+      Upvotes: current.Upvotes ? current.Upvotes : null,
+      Comments: current.Comments ? current.Comments : null,
     }).catch((error) => toast.error(error.message));
     // Delete current evacuation item from EvacuationCenters collection
     remove(ref(db, `/Reports/${current.reportId}`))
