@@ -436,7 +436,9 @@ const Evacuation = () => {
                   <Modal visible={isViewEcModalVisible} onClose={handleOnClose}>
                     <div className="flex flex-col items-center">
                       <h1 className="text-2xl font-medium text-primary-green">{current.evacuationCenterName}</h1>
-                      <p className="text-sm text-primary-gray">ID: {current.evacuationCenterId}</p>
+                      <p className="text-sm text-primary-gray">
+                        ID: <TruncateText length={50}>{current.evacuationCenterId}</TruncateText>
+                      </p>
                     </div>
                     <div className="flex flex-col mt-4">
                       <h2 className="text-sm text-safe-black">{current.location}</h2>
