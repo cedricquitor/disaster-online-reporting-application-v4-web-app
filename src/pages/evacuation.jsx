@@ -542,7 +542,7 @@ const Evacuation = () => {
                 nextLabel="Next >"
                 previousLabel="< Prev"
                 onPageChange={handlePageChange}
-                // pageRangeDisplayed={5}
+                pageRangeDisplayed={3}
                 pageCount={pageCount}
                 // renderOnZeroPageCount={null}
                 containerClassName="w-fit mt-4 py-3 mx-auto p-2 rounded-lg flex gap-4 bg-safe-white shadow"
@@ -550,6 +550,7 @@ const Evacuation = () => {
                 activeLinkClassName="outline-primary-green hover:outline-primary-green"
                 nextClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
                 previousClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
+                breakClassName="text-primary-gray"
               />
             ) : null}
           </div>
