@@ -152,7 +152,7 @@ const Evacuation = () => {
   };
 
   // Refs
-  const [addEcLocation, setAddEcLocation] = useState("");
+  const ecLocationRef = useRef();
   const [addEcName, setAddEcName] = useState("");
   const [addEcCity, setAddEcCity] = useState("");
 
@@ -164,11 +164,11 @@ const Evacuation = () => {
   // Add evacuation center handler from modal
   const handleAddEc = async () => {
     // Check if all input fields have value
-    if (addEcName && addEcCity && addEcLocation) {
+    if (addEcName && addEcCity && ecLocationRef.current.value) {
       // If all input fields have value, insert item to real-time database
       try {
         // Get geocode using the input in location textbox
-        const geocode = await geocodeByAddress(addEcLocation).catch((error) => toast.error(error));
+        const geocode = await geocodeByAddress(ecLocationRef.current.value).catch((error) => toast.error(error));
         const { lat, lng } = await getLatLng(geocode[0]);
 
         // Add evacuation center details to database
@@ -176,7 +176,7 @@ const Evacuation = () => {
           evacuationCenterId: geocode[0].place_id,
           evacuationCenterName: addEcName,
           city: addEcCity,
-          location: addEcLocation,
+          location: ecLocationRef.current.value,
           latitude: lat,
           longitude: lng,
         }).then(() => toast.success(`Added ${addEcName} to evacuation center database successfully`));
@@ -417,7 +417,7 @@ const Evacuation = () => {
                               type="text"
                               className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                               placeholder="Location"
-                              onChange={(e) => setAddEcLocation(e.target.value)}
+                              ref={ecLocationRef}
                             />
                           </Autocomplete>
                         </div>
