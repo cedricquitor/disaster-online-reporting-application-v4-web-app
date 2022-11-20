@@ -90,7 +90,7 @@ const Menu = () => {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            toast.success("Push notification successfully sent, server responded with HTTP 200");
+            toast.success("Push notification successfully sent to mobile application");
           } else {
             toast.info(`Server responded with HTTP ${response.status}`);
           }

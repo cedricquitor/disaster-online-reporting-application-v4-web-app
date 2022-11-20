@@ -114,7 +114,7 @@ const Reports = () => {
     }).catch((error) => toast.error(error.message));
     // Delete current evacuation item from EvacuationCenters collection
     remove(ref(db, `/Reports/${current.reportId}`))
-      .then(() => toast.success(`Archived ${current.disasterType} report with ID of ${current.reportId} successfully`))
+      .then(() => toast.success(`Archived ${current.disasterType} report successfully`))
       .then(() => handleOnClose())
       .catch((error) => toast.error(error.message));
   };
@@ -122,7 +122,7 @@ const Reports = () => {
   // Delete report function
   const handleDeleteReport = () => {
     remove(ref(db, `/Reports/${current.reportId}`))
-      .then(() => toast.success(`Deleted ${current.disasterType} report with ID of ${current.reportId} successfully`))
+      .then(() => toast.success(`Deleted ${current.disasterType} report successfully`))
       .then(() => handleOnClose())
       .catch((error) => toast.error(error.message));
   };

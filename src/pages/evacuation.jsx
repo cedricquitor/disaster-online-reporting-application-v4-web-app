@@ -114,7 +114,7 @@ const Evacuation = () => {
     }).catch((error) => toast.error(error.message));
     // Delete current evacuation item from EvacuationCenters collection
     remove(ref(db, `/EvacuationCenters/${current.evacuationCenterId}`))
-      .then(() => toast.success(`Archived ${current.evacuationCenterName} with ID of ${current.evacuationCenterId} successfully`))
+      .then(() => toast.success(`Archived ${current.evacuationCenterName} successfully`))
       .then(() => handleOnClose())
       .catch((error) => toast.error(error.message));
   };
@@ -152,9 +152,9 @@ const Evacuation = () => {
   };
 
   // Refs
-  const locationRef = useRef();
-  const ecNameRef = useRef();
-  const cityRef = useRef();
+  const [addEcLocation, setAddEcLocation] = useState("");
+  const [addEcName, setAddEcName] = useState("");
+  const [addEcCity, setAddEcCity] = useState("");
 
   // Edit evacuation center states
   const [editEcLocation, setEditEcLocation] = useState("");
@@ -164,22 +164,22 @@ const Evacuation = () => {
   // Add evacuation center handler from modal
   const handleAddEc = async () => {
     // Check if all input fields have value
-    if (ecNameRef.current.value && cityRef.current.value && locationRef.current.value) {
+    if (addEcName && addEcCity && addEcLocation) {
       // If all input fields have value, insert item to real-time database
       try {
         // Get geocode using the input in location textbox
-        const geocode = await geocodeByAddress(locationRef.current.value).catch((error) => toast.error(error));
+        const geocode = await geocodeByAddress(addEcLocation).catch((error) => toast.error(error));
         const { lat, lng } = await getLatLng(geocode[0]);
 
         // Add evacuation center details to database
         set(ref(db, `/EvacuationCenters/${geocode[0].place_id}`), {
           evacuationCenterId: geocode[0].place_id,
-          evacuationCenterName: ecNameRef.current.value,
-          city: cityRef.current.value,
-          location: locationRef.current.value,
+          evacuationCenterName: addEcName,
+          city: addEcCity,
+          location: addEcLocation,
           latitude: lat,
           longitude: lng,
-        }).then(() => toast.success(`Added ${geocode[0].place_id} to database successfully`));
+        }).then(() => toast.success(`Added ${addEcName} to evacuation center database successfully`));
       } catch (error) {
         toast.error(error.message);
       }
@@ -390,7 +390,7 @@ const Evacuation = () => {
                             type="text"
                             className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                             placeholder="Evacuation Center Name"
-                            ref={ecNameRef}
+                            onChange={(e) => setAddEcName(e.target.value)}
                           />
                         </div>
                         <div className="flex flex-col">
@@ -403,7 +403,7 @@ const Evacuation = () => {
                             type="text"
                             className="w-[100%] px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                             placeholder="City"
-                            ref={cityRef}
+                            onChange={(e) => setAddEcCity(e.target.value)}
                           />
                         </div>
                         <div className="flex flex-col">
@@ -417,7 +417,7 @@ const Evacuation = () => {
                               type="text"
                               className="w-full px-4 py-3 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                               placeholder="Location"
-                              ref={locationRef}
+                              onChange={(e) => setAddEcLocation(e.target.value)}
                             />
                           </Autocomplete>
                         </div>
