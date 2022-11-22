@@ -275,7 +275,7 @@ const Map = () => {
                 <IoCloseOutline onClick={() => setCurrent({})} className="h-8 w-8 text-primary-gray cursor-pointer transition hover:text-primary-green active:text-secondary-green" />
               </div>
               <h1 className="text-xl font-medium text-primary-green">
-                {current?.data?.evacuationCenterName} <span className="text-primary-gray font-normal">in</span> {current?.data?.city} City
+                {current?.data?.evacuationCenterName} <span className="text-primary-gray font-normal">in</span> {current?.data?.city} {current?.data?.city === "Quezon City" ? null : "City"}
               </h1>
               <h2 className="text-sm text-safe-black">{current?.data?.location}</h2>
               <h2 className="text-sm text-primary-gray">
