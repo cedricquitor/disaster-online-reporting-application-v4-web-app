@@ -332,7 +332,7 @@ const Evacuation = () => {
                           Location
                         </th>
                         <th scope="col" className="px-6 py-3 text-left text-base font-bold text-safe-white uppercase tracking-wider">
-                          City
+                          City/Municipality
                         </th>
                         <th scope="col" className="relative px-6 py-3">
                           <span className="sr-only">Edit</span>
@@ -395,7 +395,7 @@ const Evacuation = () => {
                         </div>
                         <div className="flex flex-col">
                           <label htmlFor="city" className="relative text-safe-black">
-                            City
+                            City/Municipality
                           </label>
                           <input
                             id="city"
@@ -477,7 +477,7 @@ const Evacuation = () => {
                         </div>
                         <div className="flex flex-col">
                           <label htmlFor="city" className="relative text-safe-black">
-                            City
+                            City/Municipality
                           </label>
                           <input
                             id="city"
@@ -519,7 +519,7 @@ const Evacuation = () => {
                   {/* Archive Evacuation Center */}
                   <Modal visible={isArchiveEcModalVisible} onClose={handleOnClose}>
                     <p className="text-xl text-center text-safe-black">
-                      Are you sure you want to archive <span className="text-primary-green">{current.evacuationCenterName}</span> in <span className="text-primary-green">{current.city} City</span> with ID of{" "}
+                      Are you sure you want to archive <span className="text-primary-green">{current.evacuationCenterName}</span> in <span className="text-primary-green">{current.city}</span> with ID of{" "}
                       <span className="text-primary-green">{current.evacuationCenterId}</span>
                       <span className="text-primary-green">{current.reportId}</span>?
                     </p>
