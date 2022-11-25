@@ -245,9 +245,9 @@ const Evacuation = () => {
   // const displayEc = data.slice(pagesVisited, pagesVisited + ecPerPage)
 
   return (
-    <div className="bg-bg-color flex items-start overflow-auto">
+    <div className="bg-bg-color flex flex-col md:flex-row items-start overflow-hidden md:overflow-auto">
       {/* Navigation */}
-      <aside className="flex flex-col justify-between h-screen">
+      <aside className="hidden md:flex flex-col justify-between h-screen">
         {/* Upper Part */}
         <div className="h-[80%] w-24 bg-safe-gray rounded-br-2xl">
           <div className="overflow-y-auto py-4 px-4">
@@ -290,7 +290,7 @@ const Evacuation = () => {
       {/* Headings */}
       <div className="container py-6 px-4">
         <h1 className="text-primary-green text-4xl font-medium mb-4">Evacuation Centers</h1>
-        <div className="flex flex-row justify-between">
+        <div className="w-full gap-4 md:gap-0 flex flex-col md:flex-row justify-between">
           {/* Search */}
           <div className="flex gap-4">
             <a href="#" onClick={() => handleSearch()} className="bg-primary-green px-[.6rem] py-2 rounded-xl shadow-lg transition hover:bg-secondary-green">
@@ -301,7 +301,7 @@ const Evacuation = () => {
                 id="search"
                 name="search"
                 type="text"
-                className="w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                className="w-[20rem] md:w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                 placeholder="Search parameters"
                 onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
                 value={searchQuery}
@@ -357,7 +357,7 @@ const Evacuation = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="text-sm text-safe-black">{city}</div>
                             </td>
-                            <td className="py-4 whitespace-nowrap text-right text-sm">
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                               <div className="flex gap-4">
                                 <button onClick={() => handleViewEcModal(evacuationCenter)} className="text-primary-gray font-medium transition hover:text-primary-green active:text-secondary-green">
                                   View
@@ -545,7 +545,7 @@ const Evacuation = () => {
                 pageRangeDisplayed={3}
                 pageCount={pageCount}
                 // renderOnZeroPageCount={null}
-                containerClassName="w-fit mt-4 py-3 mx-auto p-2 rounded-lg flex gap-4 bg-safe-white shadow"
+                containerClassName="w-5/6 overflow-scroll md:overflow-auto md:w-fit mt-4 px-8 md:px-2 py-3 mx-auto p-2 rounded-lg flex gap-4 bg-safe-white shadow"
                 pageLinkClassName="outline outline-secondary-gray rounded-md px-2 py-1 text-primary-gray transition hover:outline-primary-gray active:outline-secondary-green"
                 activeLinkClassName="outline-primary-green hover:outline-primary-green"
                 nextClassName="text-sm my-auto text-primary-gray transition hover:text-primary-green active:text-secondary-green"
@@ -555,6 +555,33 @@ const Evacuation = () => {
             ) : null}
           </div>
         )}
+      </div>
+      <div className="bg-safe-gray w-full py-2 mt-8 flex flex-row md:hidden">
+        <ul className="flex flex-row-reverse mx-auto gap-4">
+          <li>
+            <Link to="/">
+              <img src={DoraHomeIcon} alt="DORAv4 Home Button" className="w-16 h-16" />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/evacuation" className="text-primary-green transition active:text-secondary-green">
+              {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
+              <HiOfficeBuilding className="h-16 w-16 mx-auto" />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/reports" className="text-secondary-gray transition hover:text-primary-green active:text-secondary-green">
+              {/* <img src="src\assets\evacuation_center_icon.svg" alt="Evacuation Center Icon" className="mx-auto" /> */}
+              <HiFolder className="h-16 w-16 mx-auto " />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/map" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+              {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
+              <FaMapMarked className="h-16 w-16 mx-auto" />
+            </Link>
+          </li>
+        </ul>
       </div>
     </div>
   );
