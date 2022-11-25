@@ -321,13 +321,13 @@ const Map = () => {
             </Link>
           </li>
           <li className="mx-2">
-            <Link to="/reports" className="text-primary-green transition active:text-secondary-green">
+            <Link to="/reports" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
               {/* <img src="src\assets\evacuation_center_icon.svg" alt="Evacuation Center Icon" className="mx-auto" /> */}
               <HiFolder className="h-16 w-16 mx-auto " />
             </Link>
           </li>
           <li className="mx-2">
-            <Link to="/map" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+            <Link to="/map" className="text-primary-green transition active:text-secondary-green">
               {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
               <FaMapMarked className="h-16 w-16 mx-auto" />
             </Link>
