@@ -117,8 +117,8 @@ const Menu = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center bg-bg-color">
-      <div className="flex flex-col gap-4 bg-safe-white mb-8 px-6 py-6 rounded-2xl w-[440px]">
+    <div className="flex flex-col h-screen justify-center items-center bg-safe-white md:bg-bg-color">
+      <div className="flex flex-col gap-4 bg-safe-white mb-8 px-6 py-6 rounded-2xl w-[400px] md:w-[440px]">
         <div className="flex flex-col">
           <p className="mb-2 text-2xl font-bold text-primary-green">Welcome back to DORAv4!</p>
           <p className="text-2xl font-bold text-primary-green">What's the task today?</p>
