@@ -182,7 +182,7 @@ const Reports = () => {
   };
 
   return (
-    <div className="bg-bg-color flex flex-col md:flex-row items-start overflow-auto">
+    <div className="bg-bg-color flex flex-col md:flex-row items-start overflow-auto h-screen justify-between md:justify-start">
       {/* Navigation */}
       <aside className="hidden md:flex flex-col justify-between h-screen">
         {/* Upper Part */}
