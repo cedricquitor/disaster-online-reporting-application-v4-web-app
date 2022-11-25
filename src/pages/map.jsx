@@ -169,9 +169,9 @@ const Map = () => {
   };
 
   return (
-    <div className="bg-bg-color flex items-start">
+    <div className="bg-bg-color flex flex-col md:flex-row items-start">
       {/* Navigation */}
-      <aside className="flex flex-col justify-between h-screen fixed z-10">
+      <aside className="hidden md:flex flex-col justify-between h-screen fixed z-10">
         {/* Upper Part */}
         <div className="h-[80%] w-24 bg-safe-gray rounded-br-2xl outline outline-2 outline-primary-gray">
           <div className="overflow-y-auto py-4 px-4">
@@ -211,10 +211,10 @@ const Map = () => {
         </div>
       </aside>
       {/* Main Content Area */}
-      <div className="absolute flex top-[5%] justify-center w-screen">
+      <div className="absolute flex left-[25%] top-[1%] md:left-0 md:top-[5%] justify-center md:w-screen">
         <div className="bg-safe-white py-4 px-8 z-10 text-center rounded-2xl shadow-md">
           <h1 className="text-lg font-medium text-primary-green">Filter Markers</h1>
-          <div className="flex gap-4 mt-2">
+          <div className="flex flex-col md:flex-row gap-4 mt-2">
             <button onClick={() => filterSwitch("all")} className="bg-primary-green py-2 px-4 rounded-full font-bold text-sm text-safe-white shadow-lg transition hover:bg-secondary-green">
               Show All
             </button>
@@ -306,6 +306,33 @@ const Map = () => {
             </div>
           </div>
         )}
+      </div>
+      <div className="bg-safe-gray w-full py-2 flex flex-row md:hidden">
+        <ul className="flex flex-row-reverse mx-auto gap-4">
+          <li>
+            <Link to="/">
+              <img src={DoraHomeIcon} alt="DORAv4 Home Button" className="w-16 h-16" />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/evacuation" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+              {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
+              <HiOfficeBuilding className="h-16 w-16 mx-auto" />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/reports" className="text-primary-green transition active:text-secondary-green">
+              {/* <img src="src\assets\evacuation_center_icon.svg" alt="Evacuation Center Icon" className="mx-auto" /> */}
+              <HiFolder className="h-16 w-16 mx-auto " />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/map" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+              {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
+              <FaMapMarked className="h-16 w-16 mx-auto" />
+            </Link>
+          </li>
+        </ul>
       </div>
     </div>
   );
