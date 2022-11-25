@@ -182,9 +182,9 @@ const Reports = () => {
   };
 
   return (
-    <div className="bg-bg-color flex items-start overflow-auto">
+    <div className="bg-bg-color flex flex-col md:flex-row items-start overflow-auto">
       {/* Navigation */}
-      <aside className="flex flex-col justify-between h-screen">
+      <aside className="hidden md:flex flex-col justify-between h-screen">
         {/* Upper Part */}
         <div className="h-[80%] w-24 bg-safe-gray rounded-br-2xl">
           <div className="overflow-y-auto py-4 px-4">
@@ -238,7 +238,7 @@ const Reports = () => {
                 id="search"
                 name="search"
                 type="text"
-                className="w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
+                className="w-[20rem] md:w-[16rem] px-4 py-2 rounded-2xl text-sm bg-safe-gray border-2 border-secondary-gray placeholder-primary-gray focus:outline-none focus:border-primary-green focus:bg-safe-white"
                 placeholder="Search parameters"
                 onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
                 value={searchQuery}
@@ -410,6 +410,33 @@ const Reports = () => {
             ) : null}
           </div>
         )}
+      </div>
+      <div className="bg-safe-gray w-full py-2 mt-8 flex flex-row md:hidden">
+        <ul className="flex flex-row-reverse mx-auto gap-4">
+          <li>
+            <Link to="/">
+              <img src={DoraHomeIcon} alt="DORAv4 Home Button" className="w-16 h-16" />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/evacuation" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+              {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
+              <HiOfficeBuilding className="h-16 w-16 mx-auto" />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/reports" className="text-primary-green transition active:text-secondary-green">
+              {/* <img src="src\assets\evacuation_center_icon.svg" alt="Evacuation Center Icon" className="mx-auto" /> */}
+              <HiFolder className="h-16 w-16 mx-auto " />
+            </Link>
+          </li>
+          <li className="mx-2">
+            <Link to="/map" className="text-secondary-gray transition hover:text-primary-green focus:text-secondary-green">
+              {/* <img src="src\assets\reports_icon.svg" alt="Reports Icon" className="mx-auto" /> */}
+              <FaMapMarked className="h-16 w-16 mx-auto" />
+            </Link>
+          </li>
+        </ul>
       </div>
     </div>
   );
