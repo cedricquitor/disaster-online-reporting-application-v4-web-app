@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../configs/firebase";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 
@@ -21,7 +22,14 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const signIn = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password).then((user) => {
+      if (user.user.uid !== "AGyuYPeaLxTrwVdscteoff2dQeJ2") {
+        toast.error("Invalid admin credentials!");
+        return signOut(auth);
+      } else {
+        toast.success("Logged in successfully");
+      }
+    });
   };
 
   const logout = () => {
