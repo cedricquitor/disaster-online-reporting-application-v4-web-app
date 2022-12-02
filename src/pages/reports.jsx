@@ -248,6 +248,9 @@ const Reports = () => {
               </p>
             </div>
           </div>
+          <a href="#" className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
+            Generate Report
+          </a>
         </div>
         {/* Tables Area */}
         {isLoading ? (

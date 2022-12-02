@@ -14,6 +14,7 @@ import Menu from "./pages/menu";
 import ProtectedRoute from "./helpers/ProtectedRoute";
 import { useState } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
+import GenerateReport from "./components/GenerateReport";
 
 function App() {
   // List of libraries to inject to JavaScript API Loader
@@ -58,6 +59,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Map />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/generate"
+          element={
+            <ProtectedRoute>
+              <GenerateReport />
             </ProtectedRoute>
           }
         />

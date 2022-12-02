@@ -312,7 +312,7 @@ const Evacuation = () => {
             </div>
           </div>
           <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
-            Add Evac Center
+            Add Record
           </a>
         </div>
         {/* Table Content Here */}
