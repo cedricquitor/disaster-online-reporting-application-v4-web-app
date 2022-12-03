@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import DoraHomeIcon from "../assets/dora_home_btn.svg";
-import { HiSearch, HiFolder, HiOfficeBuilding } from "react-icons/hi";
+import { HiSearch, HiFolder, HiOfficeBuilding, HiPlus } from "react-icons/hi";
 import { FaMapMarked } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { useAuthContext } from "../contexts/AuthContext";
@@ -316,7 +316,10 @@ const Evacuation = () => {
               Generate Report
             </Link> */}
             <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
-              Add Record
+              <div className="flex gap-2">
+                <HiPlus className="-ml-2 my-auto h-6 w-6 mx-auto" />
+                <p>Add Record</p>
+              </div>
             </a>
           </div>
         </div>
