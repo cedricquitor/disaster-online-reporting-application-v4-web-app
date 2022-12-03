@@ -248,9 +248,9 @@ const Reports = () => {
               </p>
             </div>
           </div>
-          <a href="#" className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
+          <Link to="/generate" state={{ data: data, type: "disaster-report" }} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
             Generate Report
-          </a>
+          </Link>
         </div>
         {/* Tables Area */}
         {isLoading ? (
