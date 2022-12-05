@@ -153,7 +153,7 @@ const Menu = () => {
           </div>
         </Link>
         <button onClick={handleSendPushNotifModal} className="w-full bg-primary-green mt-2 py-3 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-          Send push notif to users
+          Send notification to users
         </button>
       </div>
       <Modal visible={isSendPushNotifVisible} onClose={handleOnClose}>
@@ -188,7 +188,7 @@ const Menu = () => {
             </div>
           </div>
           <button onClick={() => sendPushNotif()} className="w-full bg-primary-green mt-6 py-3 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green">
-            Send push notif
+            Send push notification
           </button>
           {areThereTokens ? null : <p className="mt-2 text-sm text-center text-[#b91c1c]">There are no users currently logged in to receive a push notification</p>}
         </div>

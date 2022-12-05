@@ -317,8 +317,8 @@ const Evacuation = () => {
             </Link> */}
             <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
               <div className="flex gap-2">
-                <HiPlus className="-ml-2 my-auto h-6 w-6 mx-auto" />
-                <p>Add Record</p>
+                <HiPlus className="-ml-2 my-auto mx-auto h-6 w-6" />
+                <p>Add Data</p>
               </div>
             </a>
           </div>
@@ -548,7 +548,7 @@ const Evacuation = () => {
               <ReactPaginate
                 breakLabel="..."
                 nextLabel="Next >"
-                previousLabel="< Prev"
+                previousLabel="< Back"
                 onPageChange={handlePageChange}
                 pageRangeDisplayed={3}
                 pageCount={pageCount}

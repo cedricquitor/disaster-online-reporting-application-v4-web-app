@@ -398,7 +398,7 @@ const Reports = () => {
               <ReactPaginate
                 breakLabel="..."
                 nextLabel="Next >"
-                previousLabel="< Prev"
+                previousLabel="< Back"
                 onPageChange={handlePageChange}
                 pageRangeDisplayed={3}
                 pageCount={pageCount}

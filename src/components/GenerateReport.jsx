@@ -1,8 +1,6 @@
 import { React, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import DoraLogo from "../assets/dora_logo.svg";
-import TruncateText from "./TruncateText";
 
 const GenerateReport = () => {
   const componentRef = useRef();
@@ -40,7 +38,7 @@ const GenerateReport = () => {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: type ? type : "default",
-    // onAfterPrint: () => navigate("/"),
+    onAfterPrint: () => navigate("/"),
     pageStyle: pageStyle,
   });
 
@@ -59,7 +57,7 @@ const GenerateReport = () => {
           <h1 className="text-xl font-bold text-center">Disaster Online Reporting Application v4</h1>
           <h1 className="text-xl font-bold text-center">{type === "disaster-report" ? "Disaster Reports" : "Default"}</h1>
           <div className="flex gap-[32rem]">
-            <p className="text-lg">{data.length} records</p>
+            <p className="text-lg">{data?.length} records</p>
             <p className="text-lg">{today}</p>
           </div>
         </div>
