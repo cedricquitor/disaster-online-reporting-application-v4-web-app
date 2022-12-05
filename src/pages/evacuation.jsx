@@ -311,17 +311,15 @@ const Evacuation = () => {
               </p>
             </div>
           </div>
-          <div className="flex gap-4">
-            {/* <Link to="/generate" state={{ data: data, type: "evacuation-center" }} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
+          {/* <Link to="/generate" state={{ data: data, type: "evacuation-center" }} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
               Generate Report
             </Link> */}
-            <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
-              <div className="flex gap-2">
-                <HiPlus className="-ml-2 my-auto mx-auto h-6 w-6" />
-                <p>Add Data</p>
-              </div>
-            </a>
-          </div>
+          <a href="#" onClick={handleAddEcModal} className="bg-primary-green px-8 py-2 rounded-full font-bold text-xl text-safe-white shadow-lg transition hover:bg-secondary-green text-center">
+            <div className="flex gap-2">
+              <HiPlus className="md:-ml-2 my-auto mx-auto h-6 w-6" />
+              <p className="mx-auto">Add Data</p>
+            </div>
+          </a>
         </div>
         {/* Table Content Here */}
         {isLoading ? (

@@ -227,7 +227,7 @@ const Reports = () => {
       {/* Headings */}
       <div className="container py-6 px-4">
         <h1 className="text-primary-green text-4xl font-medium mb-4">Disaster Reports</h1>
-        <div className="flex flex-row justify-between">
+        <div className="w-full gap-4 md:gap-0 flex flex-col md:flex-row justify-between">
           {/* Search */}
           <div className="flex gap-4">
             <a href="#" onClick={() => handleSearch()} className="bg-primary-green px-[.6rem] py-2 rounded-xl shadow-lg transition hover:bg-secondary-green">
