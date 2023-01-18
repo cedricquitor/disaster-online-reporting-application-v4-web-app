@@ -1,4 +1,46 @@
-# Getting Started with Create React App
+![Mockup](https://i.imgur.com/nWus4Zf.jpg)
+
+# Disaster Online Reporting Application
+
+**Disaster Online Reporting Application (DORA)** version 4 is an Android-based mobile application that allows users to easily and quickly report disasters in real-time. With this app, users can provide critical information about the disaster, including its location, type, and images allowing emergency responders to emergency responders to quickly and effectively respond to the situation. This app also allows users to receive real-time updates about the disaster and any relevant safety information.
+
+## 📄 About
+
+**ACM Conference Paper:** 
+
+_To be added..._
+
+**Members:**
+
+* Castro, Michaela Marie N.
+* Cuadra, John Lester G.
+* Maruno, Hitomi B.
+* Quitor, Cedric John D.
+
+**Technical Advisor:**
+
+* Asst. Prof. Zhuo, Eugenia R., DIT
+
+## 📸 Screenshots
+<p align="center">
+  <img src="https://i.imgur.com/vTQltdl.jpeg" width="20%" height="20%">
+  <img src="https://i.imgur.com/I1iuOU5.jpeg" width="20%" height="20%">
+  <img src="https://i.imgur.com/jG5jlge.jpeg" width="20%" height="20%">
+</p>
+
+<p align="center">
+  <img src="https://i.imgur.com/eJPPaCK.jpeg" width="20%" height="20%">
+  <img src="https://i.imgur.com/VT23vwQ.jpeg" width="20%" height="20%">
+  <img src="https://i.imgur.com/bB8Pk3s.jpeg" width="20%" height="20%">
+</p>
+
+## ⚙️ Getting Started
+
+### Project Setup
+
+Clone the repository:
+
+    git clone ChickenCombo/disaster-online-reporting-application
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
